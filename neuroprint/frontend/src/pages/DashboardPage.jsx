@@ -68,6 +68,7 @@ function DashboardPage() {
   const latestStability = chartSeries.length
     ? Number(chartSeries[chartSeries.length - 1].stability || 100)
     : 100;
+  const hasEnoughHistory = chartSeries.length >= 2;
   const stabilityScore = Math.round(latestStability);
   const riskTheme = getRiskTheme(latestDrift);
 
@@ -147,7 +148,7 @@ function DashboardPage() {
               onClick={() => navigate("/baseline")}
               className="rounded-xl bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
             >
-              Run Baseline Session
+              Set / Update Baseline
             </button>
 
             <button
@@ -197,6 +198,15 @@ function DashboardPage() {
           )}
         </div>
 
+        <div className="mt-4 rounded-xl border border-sky-100 bg-sky-50 p-4 text-sm text-sky-900">
+          <p className="font-semibold">How to test correctly</p>
+          <p className="mt-1">
+            Use <span className="font-semibold">Set / Update Baseline</span> first (one session), then use
+            <span className="font-semibold"> Behavior Capture</span> at the bottom for ongoing sessions that feed
+            charts, drift, and forecast.
+          </p>
+        </div>
+
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -206,15 +216,29 @@ function DashboardPage() {
           <p className="text-sm uppercase tracking-[0.12em] text-slate-500">Cognitive Stability Score</p>
           <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-4">
-              <span className={`text-5xl font-bold ${riskTheme.statusClass}`}>{stabilityScore}%</span>
+              <span className={`text-5xl font-bold ${hasEnoughHistory ? riskTheme.statusClass : "text-slate-500"}`}>
+                {hasEnoughHistory ? `${stabilityScore}%` : "N/A"}
+              </span>
               <div>
                 <p className="text-sm text-slate-500">Status</p>
-                <span className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${riskTheme.chipClass}`}>
-                  {riskTheme.status}
-                </span>
+                {hasEnoughHistory ? (
+                  <span
+                    className={`inline-flex rounded-full px-3 py-1 text-sm font-semibold ${riskTheme.chipClass}`}
+                  >
+                    {riskTheme.status}
+                  </span>
+                ) : (
+                  <span className="inline-flex rounded-full bg-slate-100 px-3 py-1 text-sm font-semibold text-slate-600">
+                    Need More Sessions
+                  </span>
+                )}
               </div>
             </div>
-            <p className="text-sm text-slate-500">Derived from latest baseline vs behavior similarity</p>
+            <p className="text-sm text-slate-500">
+              {hasEnoughHistory
+                ? "Derived from latest baseline vs behavior similarity"
+                : "Capture at least 2 ongoing sessions after baseline for reliable scoring"}
+            </p>
           </div>
         </motion.section>
 

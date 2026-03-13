@@ -4,10 +4,26 @@ import { analyzeDrift } from "../services/driftDetection.js";
 
 const toNumber = (value) => Number(value || 0);
 
+const normalizeBehaviorMetrics = (entry) => {
+  const typingSpeed = toNumber(entry.typingSpeed);
+  const avgKeyDelay = toNumber(entry.avgKeyDelay);
+  const clickLatency = toNumber(entry.clickLatency);
+
+  // Backward compatibility: old captures stored mouse speed in px/ms.
+  const rawMouseSpeed = toNumber(entry.mouseSpeed);
+  const mouseSpeed = rawMouseSpeed > 0 && rawMouseSpeed < 10 ? rawMouseSpeed * 1000 : rawMouseSpeed;
+
+  return {
+    typingSpeed,
+    avgKeyDelay,
+    mouseSpeed,
+    clickLatency
+  };
+};
+
 export const collectBehaviorData = async (req, res, next) => {
   try {
     const {
-      userId,
       typingSpeed,
       avgKeyDelay,
       mouseSpeed,
@@ -17,7 +33,7 @@ export const collectBehaviorData = async (req, res, next) => {
       movementJitter
     } = req.body;
 
-    const resolvedUserId = userId || req.userId;
+    const resolvedUserId = req.userId;
 
     if (!resolvedUserId) {
       return res.status(400).json({ message: "userId is required" });
@@ -67,11 +83,12 @@ export const getBehaviorHistory = async (req, res, next) => {
       .lean();
 
     const history = entries.map((entry) => {
+      const normalized = normalizeBehaviorMetrics(entry);
       const currentVector = [
-        toNumber(entry.typingSpeed),
-        toNumber(entry.avgKeyDelay),
-        toNumber(entry.mouseSpeed),
-        toNumber(entry.clickLatency)
+        normalized.typingSpeed,
+        normalized.avgKeyDelay,
+        normalized.mouseSpeed,
+        normalized.clickLatency
       ];
 
       const hasBaseline = baselineVector.some((value) => value > 0);
@@ -81,6 +98,10 @@ export const getBehaviorHistory = async (req, res, next) => {
 
       return {
         ...entry,
+        typingSpeed: normalized.typingSpeed,
+        avgKeyDelay: normalized.avgKeyDelay,
+        mouseSpeed: normalized.mouseSpeed,
+        clickLatency: normalized.clickLatency,
         driftScore: analysis.driftScore,
         stabilityScore: analysis.stabilityScore,
         riskLevel: analysis.riskLevel

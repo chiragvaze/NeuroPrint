@@ -5,6 +5,11 @@ import { predictStabilityIn30Days } from "../services/prediction.js";
 
 const toNumber = (value) => Number(value || 0);
 
+const normalizeMouseSpeed = (value) => {
+  const raw = toNumber(value);
+  return raw > 0 && raw < 10 ? raw * 1000 : raw;
+};
+
 export const predictRisk = async (req, res, next) => {
   try {
     const user = await User.findById(req.userId).select("baselineProfile");
@@ -46,14 +51,31 @@ export const predictRisk = async (req, res, next) => {
       const currentVector = [
         toNumber(entry.typingSpeed),
         toNumber(entry.avgKeyDelay),
-        toNumber(entry.mouseSpeed),
+        normalizeMouseSpeed(entry.mouseSpeed),
         toNumber(entry.clickLatency)
       ];
 
       return analyzeDrift({ baselineVector, currentVector }).stabilityScore;
     });
 
-    const prediction = predictStabilityIn30Days(stabilityHistory);
+    const dailyBuckets = behaviorEntries.reduce((acc, entry, index) => {
+      const date = new Date(entry.timestamp || Date.now());
+      const dayKey = `${date.getUTCFullYear()}-${date.getUTCMonth() + 1}-${date.getUTCDate()}`;
+      if (!acc[dayKey]) {
+        acc[dayKey] = [];
+      }
+      acc[dayKey].push(stabilityHistory[index]);
+      return acc;
+    }, {});
+
+    const dailyHistory = Object.keys(dailyBuckets)
+      .sort((a, b) => new Date(a) - new Date(b))
+      .map((dayKey) => {
+        const scores = dailyBuckets[dayKey];
+        return scores.reduce((sum, item) => sum + item, 0) / scores.length;
+      });
+
+    const prediction = predictStabilityIn30Days(dailyHistory);
 
     return res.json(prediction);
   } catch (error) {

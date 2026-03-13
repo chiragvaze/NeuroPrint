@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import BehaviorCapture from "../components/BehaviorCapture";
 import { createBaselineProfile } from "../services/baselineService";
@@ -12,14 +12,6 @@ function BaselineSession() {
   const [baseline, setBaseline] = useState(null);
   const [status, setStatus] = useState("");
   const [isSaving, setIsSaving] = useState(false);
-
-  const user = useMemo(() => {
-    try {
-      return JSON.parse(localStorage.getItem("neuroprint_user") || "null");
-    } catch {
-      return null;
-    }
-  }, []);
 
   const handleMouseTrack = () => {
     setMousePathPoints((count) => count + 1);
@@ -44,6 +36,14 @@ function BaselineSession() {
       setBaseline(result.baselineProfile);
       setStatus("Baseline profile created successfully.");
     } catch (error) {
+      if (error.response?.status === 404) {
+        localStorage.removeItem("neuroprint_token");
+        localStorage.removeItem("neuroprint_user");
+        setStatus("Session expired or user not found. Please login again.");
+        navigate("/login", { replace: true });
+        return;
+      }
+
       setStatus(error.response?.data?.message || "Failed to create baseline profile.");
     } finally {
       setIsSaving(false);
@@ -97,12 +97,12 @@ function BaselineSession() {
           </section>
         </div>
 
-        <BehaviorCapture
-          userId={user?.id || user?._id}
-          autoSend
-          submitLabel="Stop Session"
-          onCaptureComplete={handleCaptureComplete}
-        />
+        <div className="mt-5 rounded-xl border border-emerald-100 bg-emerald-50 p-4 text-sm text-emerald-900">
+          Complete this once to set your personal baseline fingerprint. After this, go back to Dashboard and use
+          Behavior Capture there for daily/ongoing monitoring.
+        </div>
+
+        <BehaviorCapture autoSend submitLabel="Stop Session" onCaptureComplete={handleCaptureComplete} />
 
         {isSaving && <p className="mt-4 text-sm text-slate-600">Saving baseline profile...</p>}
         {status && <p className="mt-2 text-sm text-slate-700">{status}</p>}

@@ -38,6 +38,19 @@ export const predictStabilityIn30Days = (stabilityHistory) => {
   }
 
   const points = normalizedHistory.map((score, index) => ({ x: index, y: score }));
+
+  if (normalizedHistory.length < 2) {
+    const currentScore = normalizedHistory[normalizedHistory.length - 1];
+    return {
+      predictedStability: Number(currentScore.toFixed(2)),
+      trend: "Stable",
+      forecastSeries: [
+        { point: "Now", stability: Number(currentScore.toFixed(2)) },
+        { point: "+30d", stability: Number(currentScore.toFixed(2)) }
+      ]
+    };
+  }
+
   const { slope, intercept } = linearRegression(points);
 
   const currentIndex = normalizedHistory.length - 1;
@@ -48,9 +61,9 @@ export const predictStabilityIn30Days = (stabilityHistory) => {
   const delta = predicted - currentScore;
 
   let trend = "Stable";
-  if (delta > 2) {
+  if (delta > 3) {
     trend = "Improving";
-  } else if (delta < -2) {
+  } else if (delta < -3) {
     trend = "Declining";
   }
 

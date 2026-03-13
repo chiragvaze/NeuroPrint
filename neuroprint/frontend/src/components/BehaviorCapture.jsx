@@ -210,10 +210,13 @@ function BehaviorCapture({
 
     try {
       if (autoSend) {
-        await collectBehaviorFeatures({
-          userId,
-          ...computedFeatures
-        });
+        const payload = { ...computedFeatures };
+
+        if (userId) {
+          payload.userId = userId;
+        }
+
+        await collectBehaviorFeatures(payload);
         setStatus(`Captured and sent ${sessionEventsRef.current.length} events.`);
       } else {
         setStatus(`Captured ${sessionEventsRef.current.length} events.`);
