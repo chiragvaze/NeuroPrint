@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { fetchChatExplanation } from "../services/api";
+import { MessageCircle, X, Send, Loader2 } from "lucide-react";
 
 export default function FloatingAIChatbot() {
   const [open, setOpen] = useState(false);
@@ -35,57 +36,78 @@ export default function FloatingAIChatbot() {
   return (
     <div className="fixed bottom-5 right-5 z-50">
       {open ? (
-        <div className="w-[22rem] rounded-2xl border border-slate-200 bg-white shadow-2xl">
-          <div className="flex items-center justify-between border-b border-slate-200 px-4 py-3">
-            <p className="text-sm font-semibold text-slate-900">AI Chat Assistant</p>
+        <div className="w-[24rem] rounded-2xl border border-surface-border bg-dark-800/95 backdrop-blur-2xl shadow-2xl shadow-black/40 animate-fadeInUp">
+          {/* Header */}
+          <div className="flex items-center justify-between border-b border-surface-border px-5 py-4">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-accent-teal/10">
+                <MessageCircle className="w-4 h-4 text-accent-teal" />
+              </div>
+              <p className="text-sm font-semibold text-slate-100">AI Chat Assistant</p>
+            </div>
             <button
               type="button"
               onClick={() => setOpen(false)}
-              className="rounded-md px-2 py-1 text-xs font-semibold text-slate-500 hover:bg-slate-100"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-slate-200 hover:bg-dark-700 transition-colors"
             >
-              Close
+              <X className="w-4 h-4" />
             </button>
           </div>
 
-          <div className="max-h-72 space-y-3 overflow-y-auto px-4 py-3">
+          {/* Messages */}
+          <div className="max-h-72 space-y-3 overflow-y-auto px-5 py-4">
             {messages.length === 0 ? (
               <p className="text-sm text-slate-500">
                 Ask anything about trial matching. For detailed reasoning, generate matches and select a trial in Match Dashboard.
               </p>
             ) : (
               messages.map((item, index) => (
-                <article key={`${item.question}-${index}`} className="space-y-1 rounded-lg bg-slate-50 p-3">
-                  <p className="text-xs font-semibold text-slate-700">You: {item.question}</p>
-                  <p className="text-sm text-slate-800">AI: {item.answer}</p>
-                </article>
+                <div key={`${item.question}-${index}`} className="space-y-2">
+                  {/* User message */}
+                  <div className="flex justify-end">
+                    <div className="max-w-[80%] rounded-xl rounded-br-sm px-3 py-2 text-sm" style={{ background: 'rgba(20, 184, 166, 0.15)', color: '#5eead4' }}>
+                      {item.question}
+                    </div>
+                  </div>
+                  {/* AI message */}
+                  <div className="flex justify-start">
+                    <div className="max-w-[80%] rounded-xl rounded-bl-sm px-3 py-2 text-sm card-surface text-slate-300">
+                      {item.answer}
+                    </div>
+                  </div>
+                </div>
               ))
             )}
           </div>
 
-          <form onSubmit={onAsk} className="border-t border-slate-200 p-3">
-            <input
-              value={question}
-              onChange={(event) => setQuestion(event.target.value)}
-              placeholder="Ask trial match question"
-              className="w-full rounded-xl border border-slate-300 px-3 py-2 text-sm"
-            />
-            {error ? <p className="mt-2 text-xs text-red-700">{error}</p> : null}
-            <button
-              type="submit"
-              disabled={loading}
-              className="mt-3 w-full rounded-xl bg-slate-900 px-3 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-60"
-            >
-              {loading ? "Thinking..." : "Ask AI"}
-            </button>
+          {/* Input */}
+          <form onSubmit={onAsk} className="border-t border-surface-border p-4">
+            <div className="flex gap-2">
+              <input
+                value={question}
+                onChange={(event) => setQuestion(event.target.value)}
+                placeholder="Ask trial match question"
+                className="input-dark flex-1 py-2.5"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="btn-glow px-3 py-2.5 flex-shrink-0"
+              >
+                {loading ? <Loader2 className="w-4 h-4 animate-spin" /> : <Send className="w-4 h-4" />}
+              </button>
+            </div>
+            {error && <p className="mt-2 text-xs text-red-400">{error}</p>}
           </form>
         </div>
       ) : (
         <button
           type="button"
           onClick={() => setOpen(true)}
-          className="rounded-full bg-slate-900 px-5 py-3 text-sm font-semibold text-white shadow-xl hover:bg-slate-700"
+          className="rounded-full p-4 shadow-2xl shadow-black/40 transition-all duration-300 hover:scale-110 animate-pulseGlow"
+          style={{ background: 'linear-gradient(135deg, #14b8a6, #0d9488)' }}
         >
-          Open AI Chat
+          <MessageCircle className="w-6 h-6 text-white" />
         </button>
       )}
     </div>
