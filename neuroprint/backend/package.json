@@ -1,0 +1,28 @@
+{
+  "name": "neuroprint-backend",
+  "version": "0.1.0",
+  "description": "Backend API for NeuroPrint Cognitive Drift Intelligence System",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "mongoose",
+    "behavioral-biometrics",
+    "neuroprint"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongoose": "^8.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4"
+  }
+}
