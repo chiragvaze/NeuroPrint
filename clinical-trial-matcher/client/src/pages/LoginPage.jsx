@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-import { Activity, Lock, UserPlus } from "lucide-react";
+import { Activity, Lock, UserPlus, Loader2 } from "lucide-react";
 
 export default function LoginPage() {
   const [mode, setMode] = useState("login");
@@ -49,25 +49,34 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col justify-center items-center font-sans px-4">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-100 relative overflow-hidden">
-        {/* Decorative Top Banner */}
-        <div className="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-blue-600 to-indigo-500"></div>
+    <div className="min-h-screen bg-dark-900 flex flex-col justify-center items-center font-sans px-4 relative overflow-hidden">
+      {/* Background glow */}
+      <div className="pointer-events-none absolute inset-0">
+        <div className="absolute top-1/4 left-1/4 h-[400px] w-[400px] rounded-full bg-accent-teal/5 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-[300px] w-[300px] rounded-full bg-accent-indigo/5 blur-3xl" />
+      </div>
+
+      <div className="w-full max-w-md card-surface p-8 relative z-10 animate-fadeInUp">
+        {/* Top accent bar */}
+        <div className="absolute top-0 left-0 w-full h-1 rounded-t-2xl bg-gradient-to-r from-accent-teal via-accent-cyan to-accent-indigo"></div>
         
         <div className="flex flex-col items-center mb-8">
-          <div className="bg-blue-50 p-4 rounded-full mb-4">
-            <Activity className="text-blue-600 w-10 h-10" />
+          <div className="p-4 rounded-2xl bg-accent-teal/10 mb-4">
+            <Activity className="text-accent-teal w-10 h-10" />
           </div>
-          <h2 className="text-2xl font-bold text-slate-900">{pageTitle}</h2>
-          <p className="text-slate-500 text-sm mt-1">Access is limited to doctors and clinical researchers</p>
+          <h2 className="text-2xl font-bold text-slate-100">{pageTitle}</h2>
+          <p className="text-slate-400 text-sm mt-1">Access is limited to doctors and clinical researchers</p>
         </div>
 
-        <div className="mb-5 grid grid-cols-2 gap-2 rounded-lg bg-slate-100 p-1">
+        {/* Mode Tabs */}
+        <div className="mb-5 grid grid-cols-2 gap-1 rounded-xl p-1" style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(148, 163, 184, 0.1)' }}>
           <button
             type="button"
             onClick={() => setMode("login")}
-            className={`rounded-md px-3 py-2 text-sm font-semibold transition ${
-              mode === "login" ? "bg-white text-blue-700 shadow-sm" : "text-slate-600"
+            className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition-all duration-300 ${
+              mode === "login"
+                ? "bg-accent-teal/15 text-accent-teal shadow-sm"
+                : "text-slate-400 hover:text-slate-200"
             }`}
           >
             Sign In
@@ -75,8 +84,10 @@ export default function LoginPage() {
           <button
             type="button"
             onClick={() => setMode("register")}
-            className={`rounded-md px-3 py-2 text-sm font-semibold transition ${
-              mode === "register" ? "bg-white text-blue-700 shadow-sm" : "text-slate-600"
+            className={`rounded-lg px-3 py-2.5 text-sm font-semibold transition-all duration-300 ${
+              mode === "register"
+                ? "bg-accent-teal/15 text-accent-teal shadow-sm"
+                : "text-slate-400 hover:text-slate-200"
             }`}
           >
             Register
@@ -84,15 +95,15 @@ export default function LoginPage() {
         </div>
 
         {(localError || authError) && (
-          <div className="mb-4 rounded-lg border border-rose-200 bg-rose-50 px-3 py-2 text-sm text-rose-700">
+          <div className="mb-4 rounded-xl border border-accent-rose/30 bg-accent-rose/10 px-4 py-3 text-sm text-red-300">
             {localError || authError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <form onSubmit={handleSubmit} className="space-y-4">
           {mode === "register" && (
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="name">
+              <label className="block text-sm font-semibold text-slate-300 mb-1.5" htmlFor="name">
                 Full Name
               </label>
               <input
@@ -101,14 +112,14 @@ export default function LoginPage() {
                 placeholder="Dr. Priya Sharma"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-colors"
+                className="input-dark"
                 required={mode === "register"}
               />
             </div>
           )}
 
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="email">
+            <label className="block text-sm font-semibold text-slate-300 mb-1.5" htmlFor="email">
               Email Address
             </label>
             <input
@@ -117,13 +128,13 @@ export default function LoginPage() {
               placeholder="doctor@clinic.org"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-colors"
+              className="input-dark"
               required
             />
           </div>
           
           <div>
-            <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="password">
+            <label className="block text-sm font-semibold text-slate-300 mb-1.5" htmlFor="password">
               Password
             </label>
             <input
@@ -132,21 +143,21 @@ export default function LoginPage() {
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-colors"
+              className="input-dark"
               required
             />
           </div>
 
           {mode === "register" && (
             <div>
-              <label className="block text-sm font-semibold text-slate-700 mb-1" htmlFor="role">
+              <label className="block text-sm font-semibold text-slate-300 mb-1.5" htmlFor="role">
                 User Type
               </label>
               <select
                 id="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
-                className="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition-colors"
+                className="input-dark"
               >
                 <option value="doctor">Doctor</option>
                 <option value="clinical_researcher">Clinical Researcher</option>
@@ -155,11 +166,11 @@ export default function LoginPage() {
           )}
 
           <div className="flex items-center justify-between">
-            <label className="flex items-center text-sm text-slate-600">
-              <input type="checkbox" className="mr-2 text-blue-600 rounded border-slate-300 focus:ring-blue-500" />
+            <label className="flex items-center text-sm text-slate-400">
+              <input type="checkbox" className="mr-2 rounded border-slate-600 bg-dark-800 text-accent-teal focus:ring-accent-teal/30" />
               Remember me
             </label>
-            <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-800 transition-colors">
+            <a href="#" className="text-sm font-medium text-accent-teal hover:text-accent-cyan transition-colors">
               Forgot password?
             </a>
           </div>
@@ -167,9 +178,15 @@ export default function LoginPage() {
           <button
             type="submit"
             disabled={submitting}
-            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 px-4 rounded-lg flex justify-center items-center shadow-md shadow-blue-500/30 transition-transform active:scale-95 gap-2 mt-4"
+            className="w-full btn-glow flex justify-center items-center gap-2 mt-6 py-3.5"
           >
-            {mode === "login" ? <Lock className="w-4 h-4" /> : <UserPlus className="w-4 h-4" />}
+            {submitting ? (
+              <Loader2 className="w-4 h-4 animate-spin" />
+            ) : mode === "login" ? (
+              <Lock className="w-4 h-4" />
+            ) : (
+              <UserPlus className="w-4 h-4" />
+            )}
             {submitting ? "Please wait..." : mode === "login" ? "Sign In" : "Create Account"}
           </button>
         </form>

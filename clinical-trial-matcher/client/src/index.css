@@ -1,27 +1,276 @@
-@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* ── Dark Palette Variables ── */
 :root {
-  --bg-a: #f2faf7;
-  --bg-b: #eef4ff;
-  --bg-c: #fdfdf7;
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #111827;
+  --bg-surface: rgba(17, 24, 39, 0.65);
+  --bg-surface-hover: rgba(30, 41, 59, 0.7);
+  --border-subtle: rgba(148, 163, 184, 0.12);
+  --border-glow: rgba(20, 184, 166, 0.35);
+  --accent-teal: #14b8a6;
+  --accent-cyan: #22d3ee;
+  --accent-amber: #f59e0b;
+  --accent-rose: #f43f5e;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
 }
 
+/* ── Base ── */
 body {
-  @apply text-slate-900 antialiased;
-  font-family: "Manrope", "Segoe UI", sans-serif;
+  @apply antialiased;
+  font-family: "Inter", "Segoe UI", sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-primary);
 }
 
+/* ── App Gradient Background ── */
 .bg-app-gradient {
   background:
-    radial-gradient(circle at 8% 5%, rgba(20, 164, 127, 0.15), transparent 38%),
-    radial-gradient(circle at 92% 8%, rgba(56, 189, 248, 0.18), transparent 34%),
-    linear-gradient(130deg, var(--bg-a), var(--bg-b) 48%, var(--bg-c));
+    radial-gradient(ellipse at 10% 0%, rgba(20, 184, 166, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 5%, rgba(34, 211, 238, 0.06) 0%, transparent 40%),
+    radial-gradient(ellipse at 50% 100%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
+    linear-gradient(180deg, #0a0e1a 0%, #0f172a 50%, #0a0e1a 100%);
 }
 
+/* ── Glassmorphism Card ── */
 .card-surface {
-  @apply rounded-2xl border border-white/70 bg-white/75 shadow-sm backdrop-blur;
+  @apply rounded-2xl border backdrop-blur-xl;
+  background: rgba(15, 23, 42, 0.6);
+  border-color: var(--border-subtle);
+  box-shadow:
+    0 0 0 1px rgba(148, 163, 184, 0.05),
+    0 4px 24px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 rgba(255, 255, 255, 0.03);
+}
+
+.card-surface:hover {
+  border-color: rgba(148, 163, 184, 0.18);
+}
+
+/* ── Glowing Button ── */
+.btn-glow {
+  @apply relative overflow-hidden rounded-xl px-6 py-3 text-sm font-semibold text-white transition-all duration-300;
+  background: linear-gradient(135deg, #14b8a6, #0d9488);
+  box-shadow: 0 0 20px rgba(20, 184, 166, 0.25), 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+.btn-glow:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(20, 184, 166, 0.4), 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+.btn-glow:active {
+  transform: translateY(0) scale(0.98);
+}
+.btn-glow:disabled {
+  opacity: 0.5;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Secondary Outline Button ── */
+.btn-outline {
+  @apply rounded-xl px-5 py-2.5 text-sm font-semibold transition-all duration-300;
+  color: var(--text-primary);
+  border: 1px solid var(--border-subtle);
+  background: rgba(15, 23, 42, 0.4);
+}
+.btn-outline:hover {
+  border-color: var(--border-glow);
+  background: rgba(20, 184, 166, 0.08);
+  color: var(--accent-teal);
+  box-shadow: 0 0 16px rgba(20, 184, 166, 0.12);
+}
+
+/* ── Dark Input ── */
+.input-dark {
+  @apply w-full rounded-xl px-4 py-3 text-sm transition-all duration-200;
+  background: rgba(15, 23, 42, 0.5);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+}
+.input-dark::placeholder {
+  color: var(--text-muted);
+}
+.input-dark:focus {
+  outline: none;
+  border-color: var(--accent-teal);
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.15), 0 0 12px rgba(20, 184, 166, 0.08);
+}
+
+/* ── Gradient Text ── */
+.text-gradient {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #14b8a6, #22d3ee);
+}
+
+.text-gradient-hero {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(135deg, #f1f5f9 0%, #14b8a6 50%, #22d3ee 100%);
+}
+
+/* ── Glow Ring (for selected/active items) ── */
+.glow-ring {
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.4), 0 0 16px rgba(20, 184, 166, 0.15);
+}
+
+/* ── Table Dark ── */
+.table-dark th {
+  @apply text-xs font-semibold uppercase tracking-wider;
+  color: var(--text-muted);
+  background: rgba(15, 23, 42, 0.8);
+}
+.table-dark td {
+  color: var(--text-secondary);
+  border-bottom: 1px solid var(--border-subtle);
+}
+.table-dark tbody tr {
+  @apply transition-colors duration-150;
+}
+.table-dark tbody tr:hover {
+  background: rgba(20, 184, 166, 0.04);
+}
+
+/* ── Badge styles ── */
+.badge {
+  @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold;
+}
+.badge-teal {
+  background: rgba(20, 184, 166, 0.12);
+  color: #5eead4;
+  border: 1px solid rgba(20, 184, 166, 0.2);
+}
+.badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: #fbbf24;
+  border: 1px solid rgba(245, 158, 11, 0.2);
+}
+.badge-indigo {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.2);
+}
+
+/* ── Animations ── */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 8px rgba(20, 184, 166, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 24px rgba(20, 184, 166, 0.6);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.5s ease-out both;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.4s ease-out both;
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Staggered children animation */
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 500ms; }
+
+/* ── Scrollbar Dark ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.2);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.35);
+}
+
+/* ── Drag-and-drop zone ── */
+.upload-zone {
+  @apply flex cursor-pointer flex-col items-center justify-center rounded-2xl px-6 py-12 text-center transition-all duration-300;
+  border: 2px dashed var(--border-subtle);
+  background: rgba(15, 23, 42, 0.3);
+}
+.upload-zone:hover {
+  border-color: var(--accent-teal);
+  background: rgba(20, 184, 166, 0.04);
+  box-shadow: 0 0 24px rgba(20, 184, 166, 0.08);
+}
+
+/* ── Chart tooltip dark ── */
+.recharts-default-tooltip {
+  background: rgba(15, 23, 42, 0.9) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
+}
+.recharts-tooltip-label {
+  color: var(--text-primary) !important;
+  font-weight: 600 !important;
+}
+.recharts-tooltip-item {
+  color: var(--accent-teal) !important;
+}
+.recharts-cartesian-grid line {
+  stroke: rgba(148, 163, 184, 0.08) !important;
+}
+.recharts-text {
+  fill: var(--text-muted) !important;
+  font-size: 12px !important;
 }

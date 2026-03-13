@@ -5,6 +5,7 @@ import {
   normalizePatient,
   parsePatientUploadFile
 } from "../utils/patientUploadParsers";
+import { Upload, FileText, Users, AlertCircle, CheckCircle2 } from "lucide-react";
 
 const EMPTY_FORM = {
   patientId: "",
@@ -97,30 +98,35 @@ export default function PatientUploadPage() {
 
   return (
     <div className="space-y-6">
+      {/* Header */}
       <section className="card-surface p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">Patient Upload Workspace</h2>
-            <p className="mt-1 text-sm text-slate-600">Bulk upload or manually add anonymized patient profiles.</p>
+            <h2 className="text-xl font-semibold text-slate-100">Patient Upload Workspace</h2>
+            <p className="mt-1 text-sm text-slate-400">Bulk upload or manually add anonymized patient profiles.</p>
           </div>
-          <div className="inline-flex rounded-xl border border-slate-200 bg-white p-1">
+          <div className="inline-flex rounded-xl p-1" style={{ background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(148, 163, 184, 0.1)' }}>
             <button
               type="button"
               onClick={() => setMode("bulk")}
-              className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${
-                mode === "bulk" ? "bg-slate-900 text-white" : "text-slate-600"
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                mode === "bulk"
+                  ? "bg-accent-teal/15 text-accent-teal"
+                  : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              Bulk Upload
+              <Upload className="w-4 h-4" /> Bulk Upload
             </button>
             <button
               type="button"
               onClick={() => setMode("manual")}
-              className={`rounded-lg px-3 py-1.5 text-sm font-semibold ${
-                mode === "manual" ? "bg-slate-900 text-white" : "text-slate-600"
+              className={`rounded-lg px-4 py-2 text-sm font-semibold transition-all duration-300 flex items-center gap-2 ${
+                mode === "manual"
+                  ? "bg-accent-teal/15 text-accent-teal"
+                  : "text-slate-400 hover:text-slate-200"
               }`}
             >
-              Manual Entry
+              <FileText className="w-4 h-4" /> Manual Entry
             </button>
           </div>
         </div>
@@ -128,24 +134,33 @@ export default function PatientUploadPage() {
 
       {mode === "bulk" ? (
         <section className="grid gap-6 xl:grid-cols-[1.1fr_1fr]">
-          <article className="card-surface p-6">
-            <h3 className="text-lg font-semibold">Bulk File Upload</h3>
-            <p className="mt-1 text-sm text-slate-600">Accepted formats: CSV and JSON. Upload one file at a time.</p>
+          <article className="card-surface p-6 animate-fadeInUp">
+            <h3 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
+              <Upload className="w-5 h-5 text-accent-teal" /> Bulk File Upload
+            </h3>
+            <p className="mt-1 text-sm text-slate-400">Accepted formats: CSV and JSON. Upload one file at a time.</p>
 
-            <label className="mt-4 flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-slate-300 bg-slate-50 px-6 py-10 text-center hover:border-brand-500">
+            <label className="upload-zone mt-4">
               <input type="file" accept=".csv,.json" onChange={onFileChange} className="hidden" />
-              <p className="text-sm font-semibold text-slate-700">Choose CSV/JSON file</p>
+              <div className="p-3 rounded-xl bg-accent-teal/10 mb-3">
+                <Upload className="w-8 h-8 text-accent-teal" />
+              </div>
+              <p className="text-sm font-semibold text-slate-200">Choose CSV/JSON file</p>
               <p className="mt-1 text-xs text-slate-500">No personal identifiers allowed</p>
             </label>
 
             <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500">Selected File</p>
-                <p className="mt-1 text-sm font-semibold text-slate-800">{selectedFile?.name || "None"}</p>
+              <div className="card-surface p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-500 flex items-center gap-1.5">
+                  <FileText className="w-3.5 h-3.5" /> Selected File
+                </p>
+                <p className="mt-1 text-sm font-semibold text-slate-200">{selectedFile?.name || "None"}</p>
               </div>
-              <div className="rounded-xl border border-slate-200 bg-white p-4">
-                <p className="text-xs uppercase tracking-wide text-slate-500">Parsed Records</p>
-                <p className="mt-1 text-sm font-semibold text-slate-800">{previewPatients.length}</p>
+              <div className="card-surface p-4">
+                <p className="text-xs uppercase tracking-wide text-slate-500 flex items-center gap-1.5">
+                  <Users className="w-3.5 h-3.5" /> Parsed Records
+                </p>
+                <p className="mt-1 text-sm font-semibold text-accent-teal">{previewPatients.length}</p>
               </div>
             </div>
 
@@ -153,38 +168,38 @@ export default function PatientUploadPage() {
               type="button"
               onClick={submitFileUpload}
               disabled={loading}
-              className="mt-4 rounded-xl bg-brand-500 px-5 py-2.5 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
+              className="mt-4 btn-glow w-full"
             >
               {loading ? "Uploading..." : "Upload Patients"}
             </button>
           </article>
 
-          <article className="card-surface p-6">
-            <h3 className="text-lg font-semibold">Parsed Data Preview</h3>
-            <p className="mt-1 text-sm text-slate-600">Showing the first 10 parsed records before upload.</p>
+          <article className="card-surface p-6 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
+            <h3 className="text-lg font-semibold text-slate-100">Parsed Data Preview</h3>
+            <p className="mt-1 text-sm text-slate-400">Showing the first 10 parsed records before upload.</p>
 
             {previewRows.length === 0 ? (
-              <div className="mt-4 rounded-xl border border-slate-200 bg-slate-50 p-6 text-sm text-slate-500">
+              <div className="mt-4 card-surface p-6 text-sm text-slate-500 text-center">
                 No parsed records yet.
               </div>
             ) : (
-              <div className="mt-4 overflow-x-auto">
-                <table className="min-w-full divide-y divide-slate-200 text-sm">
+              <div className="mt-4 overflow-x-auto rounded-xl border border-surface-border">
+                <table className="min-w-full text-sm table-dark">
                   <thead>
-                    <tr className="text-left text-slate-600">
-                      <th className="px-2 py-2">patientId</th>
-                      <th className="px-2 py-2">age</th>
-                      <th className="px-2 py-2">conditions</th>
-                      <th className="px-2 py-2">location</th>
+                    <tr>
+                      <th className="px-3 py-3 text-left">patientId</th>
+                      <th className="px-3 py-3 text-left">age</th>
+                      <th className="px-3 py-3 text-left">conditions</th>
+                      <th className="px-3 py-3 text-left">location</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-slate-100">
+                  <tbody>
                     {previewRows.map((patient, index) => (
                       <tr key={`${patient.patientId}-${index}`}>
-                        <td className="px-2 py-2 font-semibold">{patient.patientId}</td>
-                        <td className="px-2 py-2">{patient.age}</td>
-                        <td className="px-2 py-2">{patient.conditions.join(", ")}</td>
-                        <td className="px-2 py-2">{patient.location}</td>
+                        <td className="px-3 py-2.5 font-semibold text-slate-200">{patient.patientId}</td>
+                        <td className="px-3 py-2.5">{patient.age}</td>
+                        <td className="px-3 py-2.5">{patient.conditions.join(", ")}</td>
+                        <td className="px-3 py-2.5">{patient.location}</td>
                       </tr>
                     ))}
                   </tbody>
@@ -194,72 +209,36 @@ export default function PatientUploadPage() {
           </article>
         </section>
       ) : (
-        <section className="card-surface p-6">
-          <h3 className="text-lg font-semibold">Manual Patient Entry</h3>
-          <p className="mt-1 text-sm text-slate-600">Create one anonymized patient profile manually.</p>
+        <section className="card-surface p-6 animate-fadeInUp">
+          <h3 className="text-lg font-semibold text-slate-100">Manual Patient Entry</h3>
+          <p className="mt-1 text-sm text-slate-400">Create one anonymized patient profile manually.</p>
 
           <form onSubmit={submitManualEntry} className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-            <input
-              name="patientId"
-              placeholder="Patient ID"
-              value={formState.patientId}
-              onChange={onFormChange}
-              required
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-            />
-            <input
-              name="age"
-              type="number"
-              placeholder="Age"
-              value={formState.age}
-              onChange={onFormChange}
-              required
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-            />
-            <input
-              name="gender"
-              placeholder="Gender"
-              value={formState.gender}
-              onChange={onFormChange}
-              required
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-            />
-            <input
-              name="location"
-              placeholder="Location"
-              value={formState.location}
-              onChange={onFormChange}
-              required
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-            />
-            <input
-              name="conditions"
-              placeholder="Conditions (comma-separated)"
-              value={formState.conditions}
-              onChange={onFormChange}
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2 md:col-span-2"
-            />
-            <input
-              name="medications"
-              placeholder="Medications (comma-separated)"
-              value={formState.medications}
-              onChange={onFormChange}
-              className="rounded-xl border border-slate-300 bg-white px-3 py-2 md:col-span-2 xl:col-span-3"
-            />
+            <input name="patientId" placeholder="Patient ID" value={formState.patientId} onChange={onFormChange} required className="input-dark" />
+            <input name="age" type="number" placeholder="Age" value={formState.age} onChange={onFormChange} required className="input-dark" />
+            <input name="gender" placeholder="Gender" value={formState.gender} onChange={onFormChange} required className="input-dark" />
+            <input name="location" placeholder="Location" value={formState.location} onChange={onFormChange} required className="input-dark" />
+            <input name="conditions" placeholder="Conditions (comma-separated)" value={formState.conditions} onChange={onFormChange} className="input-dark md:col-span-2" />
+            <input name="medications" placeholder="Medications (comma-separated)" value={formState.medications} onChange={onFormChange} className="input-dark md:col-span-2 xl:col-span-3" />
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-60 md:col-span-2 xl:col-span-3"
-            >
+            <button type="submit" disabled={loading} className="btn-glow md:col-span-2 xl:col-span-3">
               {loading ? "Saving..." : "Save Patient"}
             </button>
           </form>
         </section>
       )}
 
-      {message ? <p className="text-sm font-medium text-green-700">{message}</p> : null}
-      {error ? <p className="text-sm font-medium text-red-700">{error}</p> : null}
+      {/* Status messages */}
+      {message && (
+        <div className="flex items-center gap-2 rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-teal-300 animate-fadeInUp">
+          <CheckCircle2 className="w-4 h-4 flex-shrink-0" /> {message}
+        </div>
+      )}
+      {error && (
+        <div className="flex items-center gap-2 rounded-xl border border-accent-rose/30 bg-accent-rose/10 px-4 py-3 text-sm text-red-300 animate-fadeInUp">
+          <AlertCircle className="w-4 h-4 flex-shrink-0" /> {error}
+        </div>
+      )}
     </div>
   );
 }

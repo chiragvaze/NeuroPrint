@@ -10,6 +10,7 @@ import TrialRankingChart from "../components/TrialRankingChart";
 import EligibilityDistributionChart from "../components/EligibilityDistributionChart";
 import AIChatAssistant from "../components/AIChatAssistant";
 import PatientProfileCard from "../components/PatientProfileCard";
+import { BarChart3, MapPin, Zap, TrendingUp, AlertCircle } from "lucide-react";
 
 const DEFAULT_PATIENT = {
   patientId: "",
@@ -161,81 +162,68 @@ export default function MatchResultsDashboardPage() {
 
   return (
     <div className="space-y-6">
-      <section className="card-surface p-6">
-        <h2 className="text-xl font-semibold text-slate-900">Match Results Dashboard</h2>
-        <p className="mt-2 text-sm text-slate-600">
-          Generate trial recommendations, inspect confidence scores, and view AI explanation for each ranked trial.
-        </p>
+      {/* Input Section */}
+      <section className="card-surface p-6 animate-fadeInUp">
+        <div className="flex items-start gap-3 mb-4">
+          <div className="p-2 rounded-xl bg-accent-teal/10">
+            <BarChart3 className="w-5 h-5 text-accent-teal" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-slate-100">Match Results Dashboard</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Generate trial recommendations, inspect confidence scores, and view AI explanations.
+            </p>
+          </div>
+        </div>
 
-        <div className="mt-4 grid gap-4 md:grid-cols-3">
-          <input
-            name="patientId"
-            placeholder="Patient ID (e.g., PAT-3001)"
-            value={patientForm.patientId}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-          />
-          <input
-            type="number"
-            name="age"
-            placeholder="Age"
-            value={patientForm.age}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-          />
-          <input
-            name="gender"
-            placeholder="Gender"
-            value={patientForm.gender}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-          />
-          <input
-            name="location"
-            placeholder="Patient Location"
-            value={patientForm.location}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-          />
-          <input
-            name="conditions"
-            placeholder="Conditions (comma-separated)"
-            value={patientForm.conditions}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2 md:col-span-2"
-          />
-          <input
-            name="medications"
-            placeholder="Medications (comma-separated)"
-            value={patientForm.medications}
-            onChange={onPatientChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2 md:col-span-1"
-          />
+        <div className="grid gap-4 md:grid-cols-3">
+          <input name="patientId" placeholder="Patient ID (e.g., PAT-3001)" value={patientForm.patientId} onChange={onPatientChange} className="input-dark" />
+          <input type="number" name="age" placeholder="Age" value={patientForm.age} onChange={onPatientChange} className="input-dark" />
+          <input name="gender" placeholder="Gender" value={patientForm.gender} onChange={onPatientChange} className="input-dark" />
+          <input name="location" placeholder="Patient Location" value={patientForm.location} onChange={onPatientChange} className="input-dark" />
+          <input name="conditions" placeholder="Conditions (comma-separated)" value={patientForm.conditions} onChange={onPatientChange} className="input-dark md:col-span-2" />
+          <input name="medications" placeholder="Medications (comma-separated)" value={patientForm.medications} onChange={onPatientChange} className="input-dark md:col-span-1" />
         </div>
 
         <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto]">
-          <input
-            value={geoFilter}
-            onChange={(event) => setGeoFilter(event.target.value)}
-            placeholder="Geographic Filter (e.g., Mumbai, India)"
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
-          />
+          <div className="relative">
+            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-500" />
+            <input
+              value={geoFilter}
+              onChange={(event) => setGeoFilter(event.target.value)}
+              placeholder="Geographic Filter (e.g., Mumbai, India)"
+              className="input-dark pl-10"
+            />
+          </div>
           <button
             type="button"
             onClick={generateRecommendations}
             disabled={loading}
-            className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
+            className="btn-glow flex items-center gap-2"
           >
+            <Zap className="w-4 h-4" />
             {loading ? "Generating..." : "Generate Matches"}
           </button>
         </div>
 
-        <div className="mt-4 rounded-xl border border-brand-100 bg-brand-50 p-4">
-          <p className="text-sm text-slate-500">Match Confidence Score</p>
-          <p className="mt-1 text-3xl font-bold text-brand-700">{bestScore}</p>
+        {/* Score Card */}
+        <div className="mt-5 card-surface p-5 flex items-center justify-between">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-slate-500 flex items-center gap-1.5">
+              <TrendingUp className="w-3.5 h-3.5" /> Match Confidence Score
+            </p>
+            <p className="mt-1 text-4xl font-extrabold text-gradient">{bestScore}</p>
+          </div>
+          {recommendations.length > 0 && (
+            <span className="badge-teal">{recommendations.length} matches</span>
+          )}
         </div>
 
-        {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
+        {error && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-accent-rose/30 bg-accent-rose/10 px-4 py-3 text-sm text-red-300">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" /> {error}
+          </div>
+        )}
       </section>
 
       <AIChatAssistant

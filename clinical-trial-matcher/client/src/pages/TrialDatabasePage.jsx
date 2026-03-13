@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Fragment } from "react";
 import { fetchAllTrials, importTrialJsonFile } from "../services/api";
+import { Database, Filter, Upload, ChevronDown, ChevronUp, CheckCircle2, AlertCircle } from "lucide-react";
 
 const DEFAULT_FILTERS = {
   condition: "",
@@ -77,54 +78,72 @@ export default function TrialDatabasePage() {
     }
   }
 
+  const phaseColor = (phase) => {
+    if (!phase) return "badge-teal";
+    if (phase.includes("1")) return "badge-indigo";
+    if (phase.includes("2")) return "badge-amber";
+    return "badge-teal";
+  };
+
   return (
     <div className="space-y-6">
-      <section className="card-surface p-6">
-        <h2 className="text-xl font-semibold text-slate-900">Clinical Trial Database</h2>
-        <p className="mt-2 text-sm text-slate-600">
-          Import trial datasets and explore records with fast filters and full eligibility criteria views.
-        </p>
+      {/* Header + Import */}
+      <section className="card-surface p-6 animate-fadeInUp">
+        <div className="flex items-start gap-3 mb-1">
+          <div className="p-2 rounded-xl bg-accent-teal/10">
+            <Database className="w-5 h-5 text-accent-teal" />
+          </div>
+          <div>
+            <h2 className="text-xl font-semibold text-slate-100">Clinical Trial Database</h2>
+            <p className="mt-1 text-sm text-slate-400">
+              Import trial datasets and explore records with fast filters and full eligibility criteria views.
+            </p>
+          </div>
+        </div>
 
-        <div className="mt-4 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
+        <div className="mt-5 grid gap-3 md:grid-cols-[1fr_auto] md:items-center">
           <input
             type="file"
             accept=".json"
             onChange={(event) => setUploadFile(event.target.files?.[0] || null)}
-            className="block w-full rounded-xl border border-slate-300 bg-white px-3 py-2 text-sm"
+            className="input-dark"
           />
           <button
             type="button"
             onClick={onImportDataset}
             disabled={loading}
-            className="rounded-xl bg-brand-500 px-4 py-2 text-sm font-semibold text-white hover:bg-brand-700 disabled:opacity-60"
+            className="btn-glow flex items-center gap-2"
           >
-            Import JSON Dataset
+            <Upload className="w-4 h-4" /> Import JSON Dataset
           </button>
         </div>
       </section>
 
-      <section className="card-surface p-6">
-        <h3 className="text-lg font-semibold">Filters</h3>
+      {/* Filters */}
+      <section className="card-surface p-6 animate-fadeInUp" style={{ animationDelay: '100ms' }}>
+        <h3 className="text-lg font-semibold text-slate-100 flex items-center gap-2">
+          <Filter className="w-5 h-5 text-accent-cyan" /> Filters
+        </h3>
         <div className="mt-4 grid gap-4 md:grid-cols-3">
           <input
             name="condition"
             value={filters.condition}
             onChange={onFilterChange}
             placeholder="Condition"
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
+            className="input-dark"
           />
           <input
             name="location"
             value={filters.location}
             onChange={onFilterChange}
             placeholder="Location"
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
+            className="input-dark"
           />
           <select
             name="phase"
             value={filters.phase}
             onChange={onFilterChange}
-            className="rounded-xl border border-slate-300 bg-white px-3 py-2"
+            className="input-dark"
           >
             <option value="">All Phases</option>
             {phases.map((phase) => (
@@ -140,7 +159,7 @@ export default function TrialDatabasePage() {
             type="button"
             onClick={applyFilters}
             disabled={loading}
-            className="rounded-xl bg-slate-900 px-4 py-2 text-sm font-semibold text-white hover:bg-slate-700 disabled:opacity-60"
+            className="btn-glow"
           >
             Apply Filters
           </button>
@@ -148,72 +167,86 @@ export default function TrialDatabasePage() {
             type="button"
             onClick={clearFilters}
             disabled={loading}
-            className="rounded-xl border border-slate-300 bg-white px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-60"
+            className="btn-outline"
           >
             Clear
           </button>
         </div>
       </section>
 
-      <section className="card-surface p-6">
-        <h3 className="text-lg font-semibold">Trials</h3>
+      {/* Trials Table */}
+      <section className="card-surface p-6 animate-fadeInUp" style={{ animationDelay: '200ms' }}>
+        <h3 className="text-lg font-semibold text-slate-100 flex items-center justify-between">
+          <span>Trials</span>
+          {trials.length > 0 && (
+            <span className="badge-teal text-xs">{trials.length} records</span>
+          )}
+        </h3>
 
-        {loading ? <p className="mt-4 text-sm text-slate-600">Loading trials...</p> : null}
+        {loading ? (
+          <div className="mt-4 flex items-center gap-2 text-sm text-slate-400">
+            <div className="w-4 h-4 border-2 border-accent-teal/30 border-t-accent-teal rounded-full animate-spin" />
+            Loading trials...
+          </div>
+        ) : null}
 
-        <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
-          <table className="min-w-full divide-y divide-slate-200 text-sm">
+        <div className="mt-4 overflow-x-auto rounded-xl border border-surface-border">
+          <table className="min-w-full text-sm table-dark">
             <thead>
-              <tr className="text-left text-slate-600">
-                <th className="px-3 py-2">trialId</th>
-                <th className="px-3 py-2">title</th>
-                <th className="px-3 py-2">condition</th>
-                <th className="px-3 py-2">location</th>
-                <th className="px-3 py-2">phase</th>
-                <th className="px-3 py-2">age range</th>
-                <th className="px-3 py-2">criteria</th>
+              <tr>
+                <th className="px-3 py-3 text-left">Trial ID</th>
+                <th className="px-3 py-3 text-left">Title</th>
+                <th className="px-3 py-3 text-left">Condition</th>
+                <th className="px-3 py-3 text-left">Location</th>
+                <th className="px-3 py-3 text-left">Phase</th>
+                <th className="px-3 py-3 text-left">Age Range</th>
+                <th className="px-3 py-3 text-left">Criteria</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100">
+            <tbody>
               {trials.map((trial) => {
                 const isOpen = expandedTrialId === trial.trialId;
 
                 return (
                   <Fragment key={trial.trialId}>
-                    <tr key={trial.trialId}>
-                      <td className="px-3 py-2">{trial.trialId}</td>
-                      <td className="px-3 py-2">{trial.title}</td>
-                      <td className="px-3 py-2">{trial.condition}</td>
-                      <td className="px-3 py-2">{trial.location}</td>
-                      <td className="px-3 py-2">{trial.phase}</td>
-                      <td className="px-3 py-2">
-                        {trial.minAge} - {trial.maxAge}
+                    <tr>
+                      <td className="px-3 py-3 font-semibold text-slate-200">{trial.trialId}</td>
+                      <td className="px-3 py-3 text-slate-300 max-w-[200px] truncate">{trial.title}</td>
+                      <td className="px-3 py-3">{trial.condition}</td>
+                      <td className="px-3 py-3">{trial.location}</td>
+                      <td className="px-3 py-3">
+                        <span className={`badge ${phaseColor(trial.phase)}`}>{trial.phase}</span>
                       </td>
-                      <td className="px-3 py-2">
+                      <td className="px-3 py-3 text-slate-300">
+                        {trial.minAge} – {trial.maxAge}
+                      </td>
+                      <td className="px-3 py-3">
                         <button
                           type="button"
                           onClick={() => setExpandedTrialId(isOpen ? "" : trial.trialId)}
-                          className="rounded-lg border border-slate-300 bg-white px-2 py-1 text-xs font-semibold text-slate-700 hover:bg-slate-50"
+                          className="btn-outline py-1.5 px-3 text-xs flex items-center gap-1"
                         >
+                          {isOpen ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
                           {isOpen ? "Hide" : "View"}
                         </button>
                       </td>
                     </tr>
-                    {isOpen ? (
-                      <tr key={`${trial.trialId}-details`}>
+                    {isOpen && (
+                      <tr>
                         <td className="px-3 py-3" colSpan={7}>
-                          <div className="grid gap-4 rounded-xl bg-slate-50 p-4 md:grid-cols-2">
+                          <div className="grid gap-4 rounded-xl p-5 md:grid-cols-2 animate-fadeInUp" style={{ background: 'rgba(15, 23, 42, 0.5)', border: '1px solid rgba(148, 163, 184, 0.08)' }}>
                             <article>
-                              <h4 className="font-semibold text-slate-800">Inclusion Criteria</h4>
-                              <p className="mt-2 whitespace-pre-wrap text-slate-700">{trial.inclusionCriteria}</p>
+                              <h4 className="font-semibold text-accent-teal text-sm">Inclusion Criteria</h4>
+                              <p className="mt-2 whitespace-pre-wrap text-slate-300 text-sm leading-relaxed">{trial.inclusionCriteria}</p>
                             </article>
                             <article>
-                              <h4 className="font-semibold text-slate-800">Exclusion Criteria</h4>
-                              <p className="mt-2 whitespace-pre-wrap text-slate-700">{trial.exclusionCriteria}</p>
+                              <h4 className="font-semibold text-accent-amber text-sm">Exclusion Criteria</h4>
+                              <p className="mt-2 whitespace-pre-wrap text-slate-300 text-sm leading-relaxed">{trial.exclusionCriteria}</p>
                             </article>
                           </div>
                         </td>
                       </tr>
-                    ) : null}
+                    )}
                   </Fragment>
                 );
               })}
@@ -221,9 +254,19 @@ export default function TrialDatabasePage() {
           </table>
         </div>
 
-        {!loading && trials.length === 0 ? <p className="mt-4 text-sm text-slate-500">No trials found.</p> : null}
-        {message ? <p className="mt-4 text-sm text-green-700">{message}</p> : null}
-        {error ? <p className="mt-4 text-sm text-red-700">{error}</p> : null}
+        {!loading && trials.length === 0 && (
+          <p className="mt-4 text-sm text-slate-500">No trials found.</p>
+        )}
+        {message && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-accent-teal/30 bg-accent-teal/10 px-4 py-3 text-sm text-teal-300">
+            <CheckCircle2 className="w-4 h-4 flex-shrink-0" /> {message}
+          </div>
+        )}
+        {error && (
+          <div className="mt-4 flex items-center gap-2 rounded-xl border border-accent-rose/30 bg-accent-rose/10 px-4 py-3 text-sm text-red-300">
+            <AlertCircle className="w-4 h-4 flex-shrink-0" /> {error}
+          </div>
+        )}
       </section>
     </div>
   );
