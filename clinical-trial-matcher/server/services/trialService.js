@@ -80,3 +80,25 @@ export async function getTrialById(id) {
 
   return null;
 }
+
+export async function updateTrialParsedEligibility(id, parsedRules, sourceText) {
+  const query = id.match(/^[0-9a-fA-F]{24}$/)
+    ? { $or: [{ trialId: id }, { _id: id }] }
+    : { trialId: id };
+
+  return Trial.findOneAndUpdate(
+    query,
+    {
+      $set: {
+        parsedEligibility: {
+          ageRange: parsedRules.ageRange,
+          requiredConditions: parsedRules.requiredConditions,
+          excludedConditions: parsedRules.excludedConditions,
+          sourceText,
+          parsedAt: new Date()
+        }
+      }
+    },
+    { new: true }
+  ).lean();
+}

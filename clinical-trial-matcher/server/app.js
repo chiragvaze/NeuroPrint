@@ -3,6 +3,7 @@ import cors from "cors";
 import matchingRoutes from "./routes/matchingRoutes.js";
 import patientRoutes from "./routes/patientRoutes.js";
 import trialRoutes from "./routes/trialRoutes.js";
+import aiRoutes from "./routes/aiRoutes.js";
 import { notFoundHandler, errorHandler } from "./middleware/errorHandler.js";
 
 const app = express();
@@ -17,6 +18,7 @@ app.get("/health", (_req, res) => {
 app.use("/api/matching", matchingRoutes);
 app.use("/api/patient", patientRoutes);
 app.use("/api/trial", trialRoutes);
+app.use("/api/ai", aiRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

@@ -112,3 +112,39 @@ This scaffold includes base models, routes, controllers, and service placeholder
 - Trial table view
 - Filters by condition, location, and phase
 - Expandable full-text inclusion and exclusion criteria
+
+## AI Criteria Parsing Module
+
+### AI Service
+- `ai-services/criteria-parser/parser.js`
+- Function: `parseEligibilityText(criteriaText)`
+
+### API
+- `POST /api/ai/parse-criteria`
+
+### Request Body
+```json
+{
+	"trialId": "TRIAL-001",
+	"criteriaText": "Inclusion: Patients aged 40-65 with Type 2 Diabetes. Exclusion: kidney disease."
+}
+```
+
+### Response Shape
+```json
+{
+	"trialId": "TRIAL-001",
+	"parsedRules": {
+		"ageRange": [40, 65],
+		"requiredConditions": ["Type 2 Diabetes"],
+		"excludedConditions": ["Kidney Disease"]
+	}
+}
+```
+
+### Validation
+- AI JSON response is validated to ensure required keys and types:
+	- `ageRange`: `[minAge, maxAge]`
+	- `requiredConditions`: `string[]`
+	- `excludedConditions`: `string[]`
+- Parsed rules are stored in the corresponding trial document under `parsedEligibility`.

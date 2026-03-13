@@ -11,7 +11,14 @@ const TrialSchema = new mongoose.Schema(
     inclusionCriteria: { type: String, required: true, trim: true },
     exclusionCriteria: { type: String, required: true, trim: true },
     phase: { type: String, required: true, trim: true },
-    sponsor: { type: String, required: true, trim: true }
+    sponsor: { type: String, required: true, trim: true },
+    parsedEligibility: {
+      ageRange: [{ type: Number }],
+      requiredConditions: [{ type: String, trim: true }],
+      excludedConditions: [{ type: String, trim: true }],
+      sourceText: { type: String, trim: true },
+      parsedAt: { type: Date }
+    }
   },
   {
     timestamps: true,
