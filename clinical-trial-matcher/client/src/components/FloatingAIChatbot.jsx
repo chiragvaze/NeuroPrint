@@ -38,11 +38,11 @@ export default function FloatingAIChatbot() {
               </div>
               <div>
                 <p className="text-sm font-bold text-slate-200">AI Assistant</p>
-                <p className="text-[10px] text-slate-600">Ask anything about trials</p>
+                <p className="text-[10px] text-slate-300">Ask anything about trials</p>
               </div>
             </div>
             <button type="button" onClick={() => setOpen(false)}
-              className="p-1.5 rounded-lg text-slate-600 hover:text-slate-300 hover:bg-white/[0.03] transition-colors">
+              className="p-1.5 rounded-lg text-slate-300 hover:text-slate-300 hover:bg-white/[0.03] transition-colors">
               <X className="w-4 h-4" />
             </button>
           </div>
@@ -50,7 +50,7 @@ export default function FloatingAIChatbot() {
           {/* Messages */}
           <div className="max-h-72 space-y-3 overflow-y-auto px-5 py-4">
             {messages.length === 0 ? (
-              <p className="text-xs text-slate-600">Ask anything about trial matching. For contextual answers, select a trial in Match Dashboard first.</p>
+              <p className="text-xs text-slate-300">Ask anything about trial matching. For contextual answers, select a trial in Match Dashboard first.</p>
             ) : (
               messages.map((item, i) => (
                 <div key={i} className="space-y-2">

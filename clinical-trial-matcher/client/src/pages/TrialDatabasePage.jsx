@@ -68,7 +68,7 @@ export default function TrialDatabasePage() {
             <span className="text-[11px] font-semibold text-indigo-400 uppercase tracking-wider">Trial Repository</span>
           </div>
           <h2 className="text-xl font-bold text-slate-100">Clinical Trial Database</h2>
-          <p className="text-sm text-slate-500 mt-1">Import, explore, and filter trial datasets with full eligibility criteria.</p>
+          <p className="text-sm text-slate-400 mt-1">Import, explore, and filter trial datasets with full eligibility criteria.</p>
         </div>
         <div className="absolute top-0 right-0 w-48 h-48 rounded-full bg-indigo-400/[0.03] blur-3xl pointer-events-none" />
       </div>
@@ -77,7 +77,7 @@ export default function TrialDatabasePage() {
       <div className="grid gap-6 lg:grid-cols-[1fr_1.5fr]">
         {/* Import */}
         <div className="rounded-2xl p-5" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-3">Import Dataset</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-3">Import Dataset</p>
           <label className="flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer transition-all hover:border-white/[0.1]"
                  style={{ background: 'rgba(6,10,19,0.5)', border: '1px solid rgba(255,255,255,0.04)' }}>
             <input type="file" accept=".json" onChange={(e) => setUploadFile(e.target.files?.[0] || null)} className="hidden" />
@@ -85,7 +85,7 @@ export default function TrialDatabasePage() {
                   style={{ background: 'rgba(99,102,241,0.1)', color: '#a5b4fc', border: '1px solid rgba(99,102,241,0.15)' }}>
               <FileJson className="w-3.5 h-3.5" /> Browse
             </span>
-            <span className="text-sm text-slate-500 truncate">{uploadFile ? uploadFile.name : "Select .json file"}</span>
+            <span className="text-sm text-slate-400 truncate">{uploadFile ? uploadFile.name : "Select .json file"}</span>
           </label>
           <button type="button" onClick={onImportDataset} disabled={loading || !uploadFile}
             className="mt-3 btn-glow w-full flex items-center justify-center gap-2 text-sm">
@@ -95,7 +95,7 @@ export default function TrialDatabasePage() {
 
         {/* Filters */}
         <div className="rounded-2xl p-5" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-3">Filters</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-3">Filters</p>
           <div className="grid gap-3 sm:grid-cols-3">
             {[
               { name: "condition", placeholder: "Diabetes", label: "Condition", icon: Search },
@@ -103,15 +103,15 @@ export default function TrialDatabasePage() {
             ].map((f) => (
               <div key={f.name}>
                 <div className="relative">
-                  <f.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
+                  <f.icon className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-300" />
                   <input name={f.name} value={filters[f.name]} onChange={onFilterChange} placeholder={f.placeholder}
-                    className="w-full rounded-xl pl-9 pr-3 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-700 outline-none focus:border-teal-500/30 transition-all" />
+                    className="w-full rounded-xl pl-9 pr-3 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 transition-all" />
                 </div>
               </div>
             ))}
             <div>
               <div className="relative">
-                <Beaker className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-600" />
+                <Beaker className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-300" />
                 <select name="phase" value={filters.phase} onChange={onFilterChange}
                   className="w-full rounded-xl pl-9 pr-3 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 outline-none focus:border-teal-500/30 transition-all appearance-none">
                   <option value="" style={{ background: '#0c1222' }}>All Phases</option>
@@ -142,7 +142,7 @@ export default function TrialDatabasePage() {
             { id: "grid", icon: LayoutGrid }
           ].map((v) => (
             <button key={v.id} onClick={() => setViewMode(v.id)}
-              className={`p-2 rounded-md transition-all ${viewMode === v.id ? "text-teal-400 bg-teal-400/10" : "text-slate-600 hover:text-slate-400"}`}>
+              className={`p-2 rounded-md transition-all ${viewMode === v.id ? "text-teal-400 bg-teal-400/10" : "text-slate-300 hover:text-slate-400"}`}>
               <v.icon className="w-4 h-4" />
             </button>
           ))}
@@ -163,10 +163,10 @@ export default function TrialDatabasePage() {
                   <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: pc.bg, color: pc.text, border: `1px solid ${pc.border}` }}>{trial.phase}</span>
                 </div>
                 <h4 className="text-[13px] font-semibold text-slate-200 line-clamp-2 mb-2">{trial.title}</h4>
-                <div className="space-y-1.5 text-[12px] text-slate-500">
-                  <p><span className="text-slate-600">Condition:</span> {trial.condition}</p>
-                  <p><span className="text-slate-600">Location:</span> {trial.location}</p>
-                  <p><span className="text-slate-600">Age:</span> {trial.minAge} – {trial.maxAge}</p>
+                <div className="space-y-1.5 text-[12px] text-slate-400">
+                  <p><span className="text-slate-300">Condition:</span> {trial.condition}</p>
+                  <p><span className="text-slate-300">Location:</span> {trial.location}</p>
+                  <p><span className="text-slate-300">Age:</span> {trial.minAge} – {trial.maxAge}</p>
                 </div>
                 <button type="button" onClick={() => setExpandedTrialId(isOpen ? "" : trial.trialId)}
                   className="mt-3 w-full btn-outline text-[11px] py-2 flex items-center justify-center gap-1.5">
@@ -220,7 +220,7 @@ export default function TrialDatabasePage() {
                         <td>
                           <span className="text-[10px] font-bold px-2 py-0.5 rounded-full" style={{ background: pc.bg, color: pc.text, border: `1px solid ${pc.border}` }}>{trial.phase}</span>
                         </td>
-                        <td className="tabular-nums text-slate-500">{trial.minAge} – {trial.maxAge}</td>
+                        <td className="tabular-nums text-slate-400">{trial.minAge} – {trial.maxAge}</td>
                         <td>
                           <button type="button" onClick={() => setExpandedTrialId(isOpen ? "" : trial.trialId)}
                             className="btn-outline py-1.5 px-3 text-[11px] flex items-center gap-1">
@@ -261,9 +261,9 @@ export default function TrialDatabasePage() {
       {/* Empty state */}
       {!loading && trials.length === 0 && (
         <div className="rounded-2xl p-12 text-center" style={{ background: 'rgba(10,15,28,0.6)', border: '1px dashed rgba(255,255,255,0.04)' }}>
-          <Database className="w-12 h-12 text-slate-700/40 mx-auto mb-4" />
-          <p className="text-sm font-medium text-slate-500">No trials found</p>
-          <p className="text-xs text-slate-600 mt-1">Import a JSON dataset to populate the trial database.</p>
+          <Database className="w-12 h-12 text-slate-400/40 mx-auto mb-4" />
+          <p className="text-sm font-medium text-slate-400">No trials found</p>
+          <p className="text-xs text-slate-300 mt-1">Import a JSON dataset to populate the trial database.</p>
         </div>
       )}
 

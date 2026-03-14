@@ -22,9 +22,9 @@ export default function EligibilityDistributionChart({ recommendations }) {
 
   return (
     <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Eligibility Distribution</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Eligibility Distribution</p>
       {recommendations.length === 0 ? (
-        <div className="h-[250px] flex items-center justify-center text-sm text-slate-600">No data</div>
+        <div className="h-[250px] flex items-center justify-center text-sm text-slate-300">No data</div>
       ) : (
         <ResponsiveContainer width="100%" height={250}>
           <PieChart>

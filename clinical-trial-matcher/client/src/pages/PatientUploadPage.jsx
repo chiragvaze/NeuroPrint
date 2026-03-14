@@ -97,7 +97,7 @@ export default function PatientUploadPage() {
               <span className="text-[11px] font-semibold text-indigo-400 uppercase tracking-wider">Data Ingestion</span>
             </div>
             <h2 className="text-xl font-bold text-slate-100">Patient Upload Workspace</h2>
-            <p className="text-sm text-slate-500 mt-1">Import anonymized patient records for AI-powered trial matching.</p>
+            <p className="text-sm text-slate-400 mt-1">Import anonymized patient records for AI-powered trial matching.</p>
           </div>
 
           {/* Mode switcher */}
@@ -109,7 +109,7 @@ export default function PatientUploadPage() {
               <button key={tab.id} type="button" onClick={() => setMode(tab.id)}
                 className={`rounded-lg px-4 py-2 text-[13px] font-semibold transition-all duration-300 flex items-center gap-2 ${
                   mode === tab.id
-                    ? "text-teal-400" : "text-slate-500 hover:text-slate-300"
+                    ? "text-teal-400" : "text-slate-400 hover:text-slate-300"
                 }`}
                 style={mode === tab.id ? { background: 'rgba(20,184,166,0.08)', border: '1px solid rgba(20,184,166,0.1)' } : { border: '1px solid transparent' }}>
                 <tab.icon className="w-4 h-4" /> {tab.label}
@@ -129,11 +129,11 @@ export default function PatientUploadPage() {
             { n: 3, label: "Upload", icon: CheckCircle2 }
           ].map((s, i) => (
             <div key={s.n} className="flex items-center flex-1">
-              <div className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${step >= s.n ? "text-teal-400" : "text-slate-600"}`}>
+              <div className={`flex items-center gap-2 px-3 py-2 rounded-lg transition-all ${step >= s.n ? "text-teal-400" : "text-slate-300"}`}>
                 <div className={`w-7 h-7 rounded-lg flex items-center justify-center text-xs font-bold transition-all ${
                   step >= s.n
                     ? "bg-teal-400/10 text-teal-400 border border-teal-400/15"
-                    : "bg-white/[0.02] text-slate-600 border border-white/[0.04]"
+                    : "bg-white/[0.02] text-slate-300 border border-white/[0.04]"
                 }`} style={step >= s.n ? { boxShadow: '0 0 10px rgba(20,184,166,0.15)' } : {}}>
                   {step > s.n ? <CheckCircle2 className="w-3.5 h-3.5" /> : s.n}
                 </div>
@@ -149,7 +149,7 @@ export default function PatientUploadPage() {
         <div className="grid gap-6 xl:grid-cols-[1.1fr_1fr]">
           {/* Upload Card */}
           <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">File Upload</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">File Upload</p>
 
             <label 
               className={`flex cursor-pointer flex-col items-center justify-center rounded-2xl px-6 py-16 text-center transition-all duration-300 relative overflow-hidden ${
@@ -167,7 +167,7 @@ export default function PatientUploadPage() {
               <p className="text-sm font-semibold text-slate-300">
                 {dragOver ? "Drop your file here" : "Drag & drop or click to browse"}
               </p>
-              <p className="mt-1.5 text-xs text-slate-600">CSV, JSON · Max 50MB · No personal identifiers</p>
+              <p className="mt-1.5 text-xs text-slate-300">CSV, JSON · Max 50MB · No personal identifiers</p>
             </label>
 
             {/* File + Records stats */}
@@ -175,14 +175,14 @@ export default function PatientUploadPage() {
               <div className="rounded-xl p-4" style={{ background: 'rgba(6,10,19,0.5)', border: '1px solid rgba(255,255,255,0.03)' }}>
                 <div className="flex items-center gap-2 mb-1.5">
                   <FileText className="w-3.5 h-3.5 text-cyan-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">File</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">File</span>
                 </div>
                 <p className="text-[13px] font-semibold text-slate-300 truncate">{selectedFile?.name || "None"}</p>
               </div>
               <div className="rounded-xl p-4" style={{ background: 'rgba(6,10,19,0.5)', border: '1px solid rgba(255,255,255,0.03)' }}>
                 <div className="flex items-center gap-2 mb-1.5">
                   <Users className="w-3.5 h-3.5 text-indigo-400" />
-                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">Records</span>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">Records</span>
                 </div>
                 <p className="text-2xl font-black text-teal-400">{previewPatients.length}</p>
               </div>
@@ -197,7 +197,7 @@ export default function PatientUploadPage() {
           {/* Preview Card */}
           <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
             <div className="flex items-center justify-between mb-4">
-              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Data Preview</p>
+              <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">Data Preview</p>
               {previewRows.length > 0 && (
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-teal-400 bg-teal-400/10 border border-teal-400/15">{previewRows.length} rows</span>
               )}
@@ -205,9 +205,9 @@ export default function PatientUploadPage() {
 
             {previewRows.length === 0 ? (
               <div className="rounded-xl p-10 text-center" style={{ background: 'rgba(6,10,19,0.4)', border: '1px dashed rgba(255,255,255,0.04)' }}>
-                <FileText className="w-10 h-10 text-slate-700/50 mx-auto mb-3" />
-                <p className="text-sm text-slate-600">No data to preview</p>
-                <p className="text-xs text-slate-700 mt-1">Upload a CSV or JSON file to see parsed results.</p>
+                <FileText className="w-10 h-10 text-slate-400/50 mx-auto mb-3" />
+                <p className="text-sm text-slate-300">No data to preview</p>
+                <p className="text-xs text-slate-400 mt-1">Upload a CSV or JSON file to see parsed results.</p>
               </div>
             ) : (
               <div className="overflow-x-auto rounded-xl" style={{ border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -238,7 +238,7 @@ export default function PatientUploadPage() {
       ) : (
         /* ═══ Manual Entry ═══ */
         <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Manual Patient Entry</p>
+          <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Manual Patient Entry</p>
           <form onSubmit={submitManualEntry} className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {[
               { name: "patientId", placeholder: "PAT-3001", label: "Patient ID" },
@@ -249,10 +249,10 @@ export default function PatientUploadPage() {
               { name: "medications", placeholder: "Metformin, Insulin", label: "Medications", span: "md:col-span-2 xl:col-span-3" },
             ].map((field) => (
               <div key={field.name} className={field.span || ""}>
-                <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600 mb-1.5">{field.label}</label>
+                <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">{field.label}</label>
                 <input name={field.name} type={field.type || "text"} placeholder={field.placeholder} value={formState[field.name]} onChange={onFormChange}
                   required={!['conditions', 'medications'].includes(field.name)}
-                  className="w-full rounded-xl px-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-700 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
+                  className="w-full rounded-xl px-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
               </div>
             ))}
             <button type="submit" disabled={loading} className="btn-glow md:col-span-2 xl:col-span-3 flex items-center justify-center gap-2">

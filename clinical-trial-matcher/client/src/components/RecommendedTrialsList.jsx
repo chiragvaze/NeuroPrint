@@ -4,11 +4,11 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
   if (!recommendations.length) {
     return (
       <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Recommended Trials</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Recommended Trials</p>
         <div className="rounded-xl p-8 text-center" style={{ background: 'rgba(6,10,19,0.4)', border: '1px dashed rgba(255,255,255,0.04)' }}>
-          <TrendingUp className="w-10 h-10 text-slate-700/40 mx-auto mb-3" />
-          <p className="text-sm text-slate-500">No recommendations yet</p>
-          <p className="text-xs text-slate-600 mt-1">Generate matches to see results.</p>
+          <TrendingUp className="w-10 h-10 text-slate-400/40 mx-auto mb-3" />
+          <p className="text-sm text-slate-400">No recommendations yet</p>
+          <p className="text-xs text-slate-300 mt-1">Generate matches to see results.</p>
         </div>
       </div>
     );
@@ -17,7 +17,7 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
   return (
     <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
       <div className="flex items-center justify-between mb-4">
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600">Recommended Trials</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300">Recommended Trials</p>
         <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-teal-400 bg-teal-400/10 border border-teal-400/15">{recommendations.length} matched</span>
       </div>
 
@@ -42,12 +42,12 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
                     {idx === 0 ? <Trophy className="w-3 h-3" /> : `#${idx + 1}`}
                   </div>
                   <div>
-                    <p className="text-[10px] uppercase tracking-wider text-slate-600 font-bold">Trial ID</p>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-300 font-bold">Trial ID</p>
                     <p className="font-bold text-slate-200 text-sm">{item.trialId}</p>
                   </div>
                 </div>
                 <div className="text-right px-3 py-2 rounded-xl" style={{ background: `${scoreColor}0d`, border: `1px solid ${scoreColor}20` }}>
-                  <p className="text-[10px] uppercase tracking-wider text-slate-600">Score</p>
+                  <p className="text-[10px] uppercase tracking-wider text-slate-300">Score</p>
                   <p className="text-2xl font-black tabular-nums leading-none" style={{ color: scoreColor }}>{item.score}</p>
                 </div>
               </div>
@@ -64,7 +64,7 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
                   {!isSelected && <ArrowUpRight className="w-3 h-3" />}
                 </button>
                 {explanationLoading && isSelected && (
-                  <span className="text-[11px] text-slate-600 flex items-center gap-1">
+                  <span className="text-[11px] text-slate-300 flex items-center gap-1">
                     <Loader2 className="w-3 h-3 animate-spin" /> Generating...
                   </span>
                 )}

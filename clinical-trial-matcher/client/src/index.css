@@ -23,9 +23,9 @@
   --accent-rose: #f43f5e;
   --accent-indigo: #6366f1;
   --accent-violet: #8b5cf6;
-  --text-primary: #f1f5f9;
-  --text-secondary: #94a3b8;
-  --text-muted: #475569;
+  --text-primary: #ffffff;
+  --text-secondary: #cbd5e1; /* brighter slate-300 instead of 400 */
+  --text-muted: #94a3b8; /* brighter slate-400 instead of 600 */
   --shadow-glow-sm: 0 0 15px rgba(20, 184, 166, 0.15);
   --shadow-glow-md: 0 0 30px rgba(20, 184, 166, 0.2);
   --shadow-glow-lg: 0 0 50px rgba(20, 184, 166, 0.25);

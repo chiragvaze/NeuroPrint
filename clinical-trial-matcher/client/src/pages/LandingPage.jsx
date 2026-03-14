@@ -50,7 +50,7 @@ export default function LandingPage() {
           <img src="/logo.png" alt="Clinical Trial Matcher" className="w-10 h-10 object-contain" />
           <div>
             <span className="text-lg font-bold text-gradient tracking-tight">Clinical Trial Matcher</span>
-            <p className="text-[10px] uppercase tracking-[0.2em] text-slate-500 -mt-0.5">AI-Powered Platform</p>
+            <p className="text-[10px] uppercase tracking-[0.2em] text-slate-400 -mt-0.5">AI-Powered Platform</p>
           </div>
         </div>
         <div className="flex items-center gap-3">
@@ -99,7 +99,7 @@ export default function LandingPage() {
 
         {/* ═══ Trusted By Bar ═══ */}
         <div className="mt-20 animate-fadeInUp" style={{ animationDelay: '400ms' }}>
-          <p className="text-[11px] uppercase tracking-[0.2em] text-slate-500 mb-5 font-semibold">Trusted by leading institutions</p>
+          <p className="text-[11px] uppercase tracking-[0.2em] text-slate-400 mb-5 font-semibold">Trusted by leading institutions</p>
           <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4 opacity-30">
             {["AIIMS Delhi", "Mayo Clinic", "Johns Hopkins", "Stanford Medicine", "TATA Memorial"].map((name) => (
               <span key={name} className="text-sm font-semibold text-slate-300 tracking-wide">{name}</span>
@@ -190,7 +190,7 @@ export default function LandingPage() {
                 </div>
                 {i < 2 && (
                   <div className="hidden md:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
-                    <ChevronRight className="w-5 h-5 text-slate-600" />
+                    <ChevronRight className="w-5 h-5 text-slate-300" />
                   </div>
                 )}
               </div>
@@ -220,11 +220,11 @@ export default function LandingPage() {
               <img src="/logo.png" alt="Clinical Trial Matcher" className="w-8 h-8 object-contain" />
               <span className="font-bold text-gradient">Clinical Trial Matcher</span>
             </div>
-            <p className="text-sm text-slate-500 leading-relaxed">AI-powered clinical trial matching for the next generation of healthcare.</p>
+            <p className="text-sm text-slate-400 leading-relaxed">AI-powered clinical trial matching for the next generation of healthcare.</p>
           </div>
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Platform</h4>
-            <ul className="space-y-2 text-sm text-slate-500">
+            <ul className="space-y-2 text-sm text-slate-400">
               <li className="hover:text-slate-300 cursor-pointer transition-colors">Trial Database</li>
               <li className="hover:text-slate-300 cursor-pointer transition-colors">Patient Upload</li>
               <li className="hover:text-slate-300 cursor-pointer transition-colors">AI Matching Engine</li>
@@ -232,14 +232,14 @@ export default function LandingPage() {
           </div>
           <div>
             <h4 className="text-xs font-semibold uppercase tracking-wider text-slate-400 mb-3">Legal</h4>
-            <ul className="space-y-2 text-sm text-slate-500">
+            <ul className="space-y-2 text-sm text-slate-400">
               <li className="hover:text-slate-300 cursor-pointer transition-colors">Privacy Policy</li>
               <li className="hover:text-slate-300 cursor-pointer transition-colors">Terms of Service</li>
               <li className="hover:text-slate-300 cursor-pointer transition-colors">HIPAA Compliance</li>
             </ul>
           </div>
         </div>
-        <div className="border-t border-surface-border py-5 text-center text-xs text-slate-600">
+        <div className="border-t border-surface-border py-5 text-center text-xs text-slate-300">
           &copy; 2026 Clinical Trial Matcher. All rights reserved. Built with ❤️ for clinical research.
         </div>
       </footer>

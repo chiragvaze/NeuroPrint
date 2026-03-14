@@ -15,9 +15,9 @@ export default function MatchConfidenceChart({ recommendations }) {
 
   return (
     <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Match Confidence</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Match Confidence</p>
       {data.length === 0 ? (
-        <div className="h-[250px] flex items-center justify-center text-sm text-slate-600">No data</div>
+        <div className="h-[250px] flex items-center justify-center text-sm text-slate-300">No data</div>
       ) : (
         <ResponsiveContainer width="100%" height={250}>
           <BarChart data={data} barCategoryGap="20%">

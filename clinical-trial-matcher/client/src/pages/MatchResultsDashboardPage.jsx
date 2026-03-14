@@ -8,7 +8,7 @@ import RecommendedTrialsList from "../components/RecommendedTrialsList";
 import MatchConfidenceChart from "../components/MatchConfidenceChart";
 import TrialRankingChart from "../components/TrialRankingChart";
 import EligibilityDistributionChart from "../components/EligibilityDistributionChart";
-import AIChatAssistant from "../components/AIChatAssistant";
+
 import PatientProfileCard from "../components/PatientProfileCard";
 import { BarChart3, MapPin, Zap, TrendingUp, AlertCircle, Target, Activity, Brain, ArrowRight, Sparkles, Users, Clock } from "lucide-react";
 
@@ -40,7 +40,7 @@ function ScoreRing({ score, size = 120, stroke = 8, label }) {
       </svg>
       <div className="absolute flex flex-col items-center justify-center" style={{ width: size, height: size }}>
         <span className="text-3xl font-black text-slate-100 tabular-nums">{score}</span>
-        <span className="text-[10px] uppercase tracking-wider text-slate-500 font-semibold">{label}</span>
+        <span className="text-[10px] uppercase tracking-wider text-slate-400 font-semibold">{label}</span>
       </div>
     </div>
   );
@@ -143,14 +143,14 @@ export default function MatchResultsDashboardPage() {
             <span className="text-[11px] font-semibold text-teal-400 uppercase tracking-wider">AI-Powered Matching</span>
           </div>
           <h2 className="text-xl font-bold text-slate-100">Match Results Dashboard</h2>
-          <p className="text-sm text-slate-500 mt-1 max-w-xl">Enter patient data below, generate AI recommendations, then explore match explanations with our conversational AI.</p>
+          <p className="text-sm text-slate-400 mt-1 max-w-xl">Enter patient data below, generate AI recommendations, then explore match explanations with our conversational AI.</p>
         </div>
         <div className="absolute top-0 right-0 w-64 h-64 rounded-full bg-teal-400/[0.03] blur-3xl pointer-events-none" />
       </div>
 
       {/* ═══ Patient Input Card ═══ */}
       <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Patient Information</p>
+        <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Patient Information</p>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { name: "patientId", placeholder: "PAT-3001", label: "Patient ID" },
@@ -161,20 +161,20 @@ export default function MatchResultsDashboardPage() {
             { name: "medications", placeholder: "Metformin, Insulin", label: "Medications", span: "sm:col-span-2 lg:col-span-1" },
           ].map((f) => (
             <div key={f.name} className={f.span || ""}>
-              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600 mb-1.5">{f.label}</label>
+              <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">{f.label}</label>
               <input name={f.name} type={f.type || "text"} placeholder={f.placeholder} value={patientForm[f.name]} onChange={onPatientChange}
-                className="w-full rounded-xl px-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-700 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
+                className="w-full rounded-xl px-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
             </div>
           ))}
         </div>
 
         <div className="mt-4 flex flex-wrap items-end gap-3">
           <div className="flex-1 min-w-[200px]">
-            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-600 mb-1.5">Geographic Filter</label>
+            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">Geographic Filter</label>
             <div className="relative">
-              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-600" />
+              <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
               <input value={geoFilter} onChange={(e) => setGeoFilter(e.target.value)} placeholder="Filter by location"
-                className="w-full rounded-xl pl-10 pr-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-700 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
+                className="w-full rounded-xl pl-10 pr-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
             </div>
           </div>
           <button type="button" onClick={generateRecommendations} disabled={loading}
@@ -207,7 +207,7 @@ export default function MatchResultsDashboardPage() {
                  style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
               <div className="flex items-center justify-between mb-3">
                 <m.icon className={`w-4 h-4 ${m.color} opacity-50 group-hover:opacity-100 transition-opacity`} />
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{m.label}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{m.label}</span>
               </div>
               <p className={`text-2xl font-black ${m.color} mb-3`}>{m.value}</p>
               <ProgressBar value={m.progress} color={m.pColor} />
@@ -222,12 +222,7 @@ export default function MatchResultsDashboardPage() {
         </div>
       )}
 
-      {/* ═══ AI Chat ═══ */}
-      <AIChatAssistant
-        patient={normalizePatient(patientForm)} trial={selectedTrial}
-        matchingResult={selectedMatchingResult}
-        matchExplanation={selectedTrialId ? explanationByTrial[selectedTrialId] : ""}
-      />
+
 
       <PatientProfileCard patientId={patientForm.patientId} />
 

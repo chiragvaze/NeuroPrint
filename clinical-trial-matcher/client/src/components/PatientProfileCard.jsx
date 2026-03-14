@@ -31,17 +31,17 @@ export default function PatientProfileCard({ patientId }) {
 
   return (
     <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
-      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-600 mb-4">Patient Profile</p>
+      <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-300 mb-4">Patient Profile</p>
 
       {!patientId?.trim() && (
         <div className="rounded-xl p-8 text-center" style={{ background: 'rgba(6,10,19,0.4)', border: '1px dashed rgba(255,255,255,0.04)' }}>
-          <User className="w-10 h-10 text-slate-700/40 mx-auto mb-3" />
-          <p className="text-sm text-slate-500">Enter a patient ID to view profile</p>
+          <User className="w-10 h-10 text-slate-400/40 mx-auto mb-3" />
+          <p className="text-sm text-slate-400">Enter a patient ID to view profile</p>
         </div>
       )}
 
       {loading && (
-        <div className="flex items-center gap-2 text-sm text-slate-500">
+        <div className="flex items-center gap-2 text-sm text-slate-400">
           <div className="w-4 h-4 border-2 border-teal-400/30 border-t-teal-400 rounded-full animate-spin" /> Loading...
         </div>
       )}
@@ -57,7 +57,7 @@ export default function PatientProfileCard({ patientId }) {
                      style={{ background: `${s.color}12`, border: `1px solid ${s.color}20` }}>
                   <s.icon className="w-3.5 h-3.5" style={{ color: s.color }} />
                 </div>
-                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-600">{s.label}</span>
+                <span className="text-[10px] font-bold uppercase tracking-wider text-slate-300">{s.label}</span>
               </div>
               <p className="text-[13px] font-bold text-slate-200">{s.value}</p>
             </div>
