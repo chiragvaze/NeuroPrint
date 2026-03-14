@@ -170,11 +170,11 @@ export default function MatchResultsDashboardPage() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { name: "patientId", placeholder: "PAT-3001", label: "Patient ID" },
-            { name: "age", placeholder: "45", label: "Age", type: "number" },
-            { name: "gender", placeholder: "Male / Female", label: "Gender" },
-            { name: "location", placeholder: "Mumbai, India", label: "Location" },
-            { name: "conditions", placeholder: "Diabetes, Hypertension", label: "Conditions", span: "sm:col-span-2 lg:col-span-1" },
-            { name: "medications", placeholder: "Metformin, Insulin", label: "Medications", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "age", placeholder: "45", label: "Age (Optional)", type: "number" },
+            { name: "gender", placeholder: "Male / Female", label: "Gender (Optional)" },
+            { name: "location", placeholder: "Mumbai, India", label: "Location (Optional)" },
+            { name: "conditions", placeholder: "Diabetes, Hypertension", label: "Conditions (Optional)", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "medications", placeholder: "Metformin, Insulin", label: "Medications (Optional)", span: "sm:col-span-2 lg:col-span-1" },
           ].map((f) => (
             <div key={f.name} className={f.span || ""}>
               <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">{f.label}</label>
