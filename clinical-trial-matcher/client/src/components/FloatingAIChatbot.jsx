@@ -80,10 +80,11 @@ export default function FloatingAIChatbot() {
         </div>
       ) : (
         <button type="button" onClick={() => setOpen(true)}
-          className="relative rounded-2xl p-4 shadow-2xl shadow-black/50 transition-all duration-300 hover:scale-110 group"
+          className="relative rounded-full px-5 py-3 shadow-2xl shadow-black/50 transition-all duration-300 hover:scale-105 group flex items-center gap-2"
           style={{ background: 'linear-gradient(135deg, #14b8a6, #0d9488)', boxShadow: '0 0 30px rgba(20, 184, 166, 0.25), 0 8px 32px rgba(0,0,0,0.3)' }}>
-          <MessageCircle className="w-6 h-6 text-white" />
-          <div className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-accent-cyan border-2 border-dark-900 animate-pulseGlow" />
+          <Sparkles className="w-5 h-5 text-white" />
+          <span className="text-white font-bold text-sm tracking-wide">Ask AI</span>
+          <div className="absolute top-0 right-0 w-3 h-3 rounded-full bg-accent-cyan border-2 border-dark-900 animate-pulseGlow" />
         </button>
       )}
     </div>

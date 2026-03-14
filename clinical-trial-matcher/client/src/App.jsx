@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import PatientUploadPage from "./pages/PatientUploadPage";
 import TrialDatabasePage from "./pages/TrialDatabasePage";
 import MatchResultsDashboardPage from "./pages/MatchResultsDashboardPage";
+import BatchProcessingPage from "./pages/BatchProcessingPage";
 import AppLayout from "./components/AppLayout";
 import FloatingAIChatbot from "./components/FloatingAIChatbot";
 import LandingPage from "./pages/LandingPage";
@@ -44,6 +45,7 @@ const DashboardApp = () => {
         {activePage === "patients" ? <PatientUploadPage /> : null}
         {activePage === "trials" ? <TrialDatabasePage /> : null}
         {activePage === "results" ? <MatchResultsDashboardPage /> : null}
+        {activePage === "batch" ? <BatchProcessingPage /> : null}
       </div>
 
       <FloatingAIChatbot />

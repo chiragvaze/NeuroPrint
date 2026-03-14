@@ -1,14 +1,21 @@
 import { useState } from "react";
-import { LayoutDashboard, Upload, Database, BarChart3, LogOut, Settings, Bell, HelpCircle, Search, ChevronLeft, ChevronRight, Menu, X } from "lucide-react";
+import { LayoutDashboard, Upload, Database, BarChart3, LogOut, Settings, Bell, HelpCircle, Search, ChevronLeft, ChevronRight, Menu, X, Layers } from "lucide-react";
 
 export default function AppLayout({ children, activePage, onNavigate, user, onLogout }) {
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [toastMsg, setToastMsg] = useState("");
+
+  const showToast = (msg) => {
+    setToastMsg(msg);
+    setTimeout(() => setToastMsg(""), 3000);
+  };
 
   const navItems = [
     { id: "results", label: "Match Dashboard", icon: BarChart3 },
     { id: "patients", label: "Patient Upload", icon: Upload },
-    { id: "trials", label: "Trial Database", icon: Database }
+    { id: "trials", label: "Trial Database", icon: Database },
+    { id: "batch", label: "Batch Matching", icon: Layers }
   ];
 
   const sideWidth = collapsed ? "w-[72px]" : "w-[260px]";
@@ -106,22 +113,16 @@ export default function AppLayout({ children, activePage, onNavigate, user, onLo
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Search */}
-            <div className="hidden md:flex items-center gap-2 rounded-xl px-3 py-2"
-                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.04)' }}>
-              <Search className="w-3.5 h-3.5 text-slate-300" />
-              <input placeholder="Search..." className="bg-transparent text-sm text-slate-300 placeholder:text-slate-300 outline-none w-40" />
-              <kbd className="text-[9px] font-sans font-semibold text-slate-300 bg-white/[0.03] border border-white/[0.06] px-1.5 py-0.5 rounded">⌘K</kbd>
-            </div>
 
-            <button className="relative p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
+
+            <button onClick={() => showToast("Notifications module coming soon")} className="relative p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
               <Bell className="w-[18px] h-[18px]" />
               <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-teal-400" style={{ boxShadow: '0 0 6px rgba(20,184,166,0.5)' }} />
             </button>
-            <button className="p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
+            <button onClick={() => showToast("Help Center is under construction")} className="p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
               <HelpCircle className="w-[18px] h-[18px]" />
             </button>
-            <button className="p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
+            <button onClick={() => showToast("User configurations will be available soon")} className="p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
               <Settings className="w-[18px] h-[18px]" />
             </button>
 
@@ -140,6 +141,19 @@ export default function AppLayout({ children, activePage, onNavigate, user, onLo
           {children}
         </main>
       </div>
+
+      {/* Toast Notification */}
+      {toastMsg && (
+        <div className="fixed bottom-6 right-6 z-50 animate-fadeInUp">
+          <div className="px-4 py-3 rounded-xl shadow-lg border border-teal-500/20 bg-teal-500/10 backdrop-blur-md text-teal-300 text-sm font-medium flex items-center gap-3">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-teal-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-teal-500"></span>
+            </span>
+            {toastMsg}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

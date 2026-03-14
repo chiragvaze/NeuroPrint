@@ -10,7 +10,7 @@ import TrialRankingChart from "../components/TrialRankingChart";
 import EligibilityDistributionChart from "../components/EligibilityDistributionChart";
 
 import PatientProfileCard from "../components/PatientProfileCard";
-import { BarChart3, MapPin, Zap, TrendingUp, AlertCircle, Target, Activity, Brain, ArrowRight, Sparkles, Users, Clock } from "lucide-react";
+import { BarChart3, MapPin, Zap, TrendingUp, AlertCircle, Target, Activity, Brain, ArrowRight, Sparkles, Users, Clock, Download } from "lucide-react";
 
 const DEFAULT_PATIENT = {
   patientId: "", age: "", gender: "", conditions: "", medications: "", location: ""
@@ -130,6 +130,22 @@ export default function MatchResultsDashboardPage() {
     }
   }
 
+  const handleExportCSV = () => {
+    if (!recommendations.length) return;
+    const headers = ["Trial ID", "Match Score", "Patient ID", "Age", "Gender", "Location"];
+    const rows = recommendations.map(r => [
+      r.trialId, r.score, patientForm.patientId || "N/A", patientForm.age || "N/A", patientForm.gender || "N/A", patientForm.location || "N/A"
+    ]);
+    const csvContent = [headers.join(","), ...rows.map(r => r.join(","))].join("\n");
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(blob);
+    link.download = `ctm_matches_${patientForm.patientId || 'report'}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   const hasResults = recommendations.length > 0;
 
   return (
@@ -154,11 +170,11 @@ export default function MatchResultsDashboardPage() {
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { name: "patientId", placeholder: "PAT-3001", label: "Patient ID" },
-            { name: "age", placeholder: "45", label: "Age", type: "number" },
-            { name: "gender", placeholder: "Male / Female", label: "Gender" },
-            { name: "location", placeholder: "Mumbai, India", label: "Location" },
-            { name: "conditions", placeholder: "Diabetes, Hypertension", label: "Conditions", span: "sm:col-span-2 lg:col-span-1" },
-            { name: "medications", placeholder: "Metformin, Insulin", label: "Medications", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "age", placeholder: "45", label: "Age (Optional)", type: "number" },
+            { name: "gender", placeholder: "Male / Female", label: "Gender (Optional)" },
+            { name: "location", placeholder: "Mumbai, India", label: "Location (Optional)" },
+            { name: "conditions", placeholder: "Diabetes, Hypertension", label: "Conditions (Optional)", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "medications", placeholder: "Metformin, Insulin", label: "Medications (Optional)", span: "sm:col-span-2 lg:col-span-1" },
           ].map((f) => (
             <div key={f.name} className={f.span || ""}>
               <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">{f.label}</label>
@@ -166,19 +182,19 @@ export default function MatchResultsDashboardPage() {
                 className="w-full rounded-xl px-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
             </div>
           ))}
-        </div>
-
-        <div className="mt-4 flex flex-wrap items-end gap-3">
-          <div className="flex-1 min-w-[200px]">
-            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">Geographic Filter</label>
+          <div className="sm:col-span-2 lg:col-span-3 mt-1">
+            <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">Geographic Filter (Optional)</label>
             <div className="relative">
               <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-300" />
               <input value={geoFilter} onChange={(e) => setGeoFilter(e.target.value)} placeholder="Filter by location"
                 className="w-full rounded-xl pl-10 pr-4 py-2.5 text-sm bg-white/[0.02] border border-white/[0.05] text-slate-200 placeholder:text-slate-400 outline-none focus:border-teal-500/30 focus:ring-2 focus:ring-teal-500/10 transition-all" />
             </div>
           </div>
+        </div>
+
+        <div className="mt-6 flex justify-end">
           <button type="button" onClick={generateRecommendations} disabled={loading}
-            className="btn-glow flex items-center gap-2 whitespace-nowrap">
+            className="btn-glow px-6 py-3 flex items-center justify-center gap-2 whitespace-nowrap min-w-[200px]">
             {loading ? (
               <><div className="w-4 h-4 border-2 border-white/20 border-t-white rounded-full animate-spin" /> Generating...</>
             ) : (
@@ -188,12 +204,17 @@ export default function MatchResultsDashboardPage() {
         </div>
       </div>
 
+      {/* ═══ Loading Skeletons ═══ */}
+      {loading && <MatchResultsSkeleton />}
+
       {/* ═══ Metrics Row with Score Rings ═══ */}
-      {hasResults && (
+      {!loading && hasResults && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {/* Score Ring */}
           <div className="col-span-2 lg:col-span-1 rounded-2xl p-6 flex items-center justify-center relative"
                style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
+            <button onClick={handleExportCSV} className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-teal-400 hover:bg-teal-400/10 transition-colors" title="Export Dashboard CSV">
+              <Download className="w-4 h-4" />
+            </button>
             <ScoreRing score={bestScore} label="best" />
           </div>
 
@@ -224,20 +245,40 @@ export default function MatchResultsDashboardPage() {
 
 
 
-      <PatientProfileCard patientId={patientForm.patientId} />
+      {!loading && hasResults && (
+        <div className="space-y-6 animate-fadeInUp delay-100">
+          <PatientProfileCard patientId={patientForm.patientId} />
 
-      {/* ═══ Charts + Trial List ═══ */}
-      <div className="grid gap-6 xl:grid-cols-2">
-        <RecommendedTrialsList
-          recommendations={recommendations} selectedTrialId={selectedTrialId}
-          onSelectTrial={loadExplanation} explanationByTrial={explanationByTrial}
-          explanationLoading={explanationLoading}
-        />
-        <MatchConfidenceChart recommendations={recommendations} />
+          {/* ═══ Charts + Trial List ═══ */}
+          <div className="grid gap-6 xl:grid-cols-2">
+            <RecommendedTrialsList
+              recommendations={recommendations} selectedTrialId={selectedTrialId}
+              onSelectTrial={loadExplanation} explanationByTrial={explanationByTrial}
+              explanationLoading={explanationLoading} patientForm={patientForm}
+            />
+            <MatchConfidenceChart recommendations={recommendations} />
+          </div>
+          <div className="grid gap-6 xl:grid-cols-2">
+            <TrialRankingChart recommendations={recommendations} />
+            <EligibilityDistributionChart recommendations={recommendations} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MatchResultsSkeleton() {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        {[1, 2, 3, 4].map((i) => (
+          <div key={i} className="h-36 rounded-2xl skeleton-shimmer border border-white/[0.04]" />
+        ))}
       </div>
       <div className="grid gap-6 xl:grid-cols-2">
-        <TrialRankingChart recommendations={recommendations} />
-        <EligibilityDistributionChart recommendations={recommendations} />
+        <div className="h-[400px] rounded-2xl skeleton-shimmer border border-white/[0.04]" />
+        <div className="h-[400px] rounded-2xl skeleton-shimmer border border-white/[0.04]" />
       </div>
     </div>
   );

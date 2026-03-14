@@ -1,6 +1,55 @@
-import { Eye, Loader2, TrendingUp, ArrowUpRight, Trophy } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Eye, Loader2, TrendingUp, ArrowUpRight, Trophy, Bookmark } from "lucide-react";
 
-export default function RecommendedTrialsList({ recommendations, selectedTrialId, onSelectTrial, explanationByTrial, explanationLoading }) {
+const HighlightedText = ({ text, patientForm }) => {
+  if (!text) return null;
+  const keywordsToHighlight = [
+    ...(patientForm?.conditions || "").split(",").map(s => s.trim()).filter(Boolean),
+    ...(patientForm?.medications || "").split(",").map(s => s.trim()).filter(Boolean),
+    "Age", "Gender", "Eligible", "Location", patientForm?.age, patientForm?.gender, patientForm?.location
+  ].filter(Boolean);
+
+  if (!keywordsToHighlight.length) return <>{text}</>;
+  const escapedKeywords = keywordsToHighlight.map(k => String(k).replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&'));
+  const regex = new RegExp(`\\b(${escapedKeywords.join("|")})\\b`, "gi");
+  const parts = text.split(regex);
+
+  return (
+    <>
+      {parts.map((part, i) => {
+        const isMatch = keywordsToHighlight.some(k => String(k).toLowerCase() === part.toLowerCase());
+        return isMatch ? (
+          <span key={i} className="px-1.5 py-0.5 rounded text-teal-300 bg-teal-400/10 font-medium">
+            {part}
+          </span>
+        ) : (
+          <span key={i}>{part}</span>
+        );
+      })}
+    </>
+  );
+};
+
+export default function RecommendedTrialsList({ recommendations, selectedTrialId, onSelectTrial, explanationByTrial, explanationLoading, patientForm }) {
+  const [savedTrials, setSavedTrials] = useState(() => {
+    try {
+      const saved = localStorage.getItem("saved-trials");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  useEffect(() => {
+    localStorage.setItem("saved-trials", JSON.stringify(savedTrials));
+  }, [savedTrials]);
+
+  const toggleSave = (trialId, e) => {
+    e.stopPropagation();
+    setSavedTrials(prev => 
+      prev.includes(trialId) ? prev.filter(id => id !== trialId) : [...prev, trialId]
+    );
+  };
   if (!recommendations.length) {
     return (
       <div className="rounded-2xl p-6" style={{ background: 'rgba(10,15,28,0.6)', border: '1px solid rgba(255,255,255,0.04)' }}>
@@ -46,9 +95,15 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
                     <p className="font-bold text-slate-200 text-sm">{item.trialId}</p>
                   </div>
                 </div>
-                <div className="text-right px-3 py-2 rounded-xl" style={{ background: `${scoreColor}0d`, border: `1px solid ${scoreColor}20` }}>
-                  <p className="text-[10px] uppercase tracking-wider text-slate-300">Score</p>
-                  <p className="text-2xl font-black tabular-nums leading-none" style={{ color: scoreColor }}>{item.score}</p>
+                <div className="flex items-center gap-3">
+                  <button type="button" onClick={(e) => toggleSave(item.trialId, e)}
+                    className={`p-2 rounded-xl border transition-all ${savedTrials.includes(item.trialId) ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' : 'bg-white/[0.02] border-white/[0.05] text-slate-400 hover:text-slate-200'}`}>
+                    <Bookmark className="w-4 h-4" size={16} fill={savedTrials.includes(item.trialId) ? "currentColor" : "none"} />
+                  </button>
+                  <div className="text-right px-3 py-2 rounded-xl" style={{ background: `${scoreColor}0d`, border: `1px solid ${scoreColor}20` }}>
+                    <p className="text-[10px] uppercase tracking-wider text-slate-300">Score</p>
+                    <p className="text-2xl font-black tabular-nums leading-none" style={{ color: scoreColor }}>{item.score}</p>
+                  </div>
                 </div>
               </div>
 
@@ -73,7 +128,7 @@ export default function RecommendedTrialsList({ recommendations, selectedTrialId
               {explanation && (
                 <div className="mt-3 rounded-xl p-3.5 text-sm text-slate-400 leading-relaxed animate-fadeIn"
                      style={{ background: 'rgba(6,10,19,0.4)', border: '1px solid rgba(255,255,255,0.03)' }}>
-                  {explanation}
+                  <HighlightedText text={explanation} patientForm={patientForm} />
                 </div>
               )}
             </article>
