@@ -106,13 +106,7 @@ export default function AppLayout({ children, activePage, onNavigate, user, onLo
           </div>
 
           <div className="flex items-center gap-2">
-            {/* Search */}
-            <div className="hidden md:flex items-center gap-2 rounded-xl px-3 py-2"
-                 style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.04)' }}>
-              <Search className="w-3.5 h-3.5 text-slate-300" />
-              <input placeholder="Search..." className="bg-transparent text-sm text-slate-300 placeholder:text-slate-300 outline-none w-40" />
-              <kbd className="text-[9px] font-sans font-semibold text-slate-300 bg-white/[0.03] border border-white/[0.06] px-1.5 py-0.5 rounded">⌘K</kbd>
-            </div>
+
 
             <button className="relative p-2 rounded-xl text-slate-400 hover:text-slate-300 hover:bg-white/[0.03] transition-all">
               <Bell className="w-[18px] h-[18px]" />
