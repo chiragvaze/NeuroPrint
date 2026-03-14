@@ -1,6 +1,11 @@
 patientId,age,gender,conditions,medications,location
-PAT-2001,45,Female,"Type 2 Diabetes,Hypertension","Metformin",Mumbai
-PAT-2002,52,Male,"Type 2 Diabetes","Metformin",Pune
-PAT-2003,61,Female,"Type 2 Diabetes,Obesity","Insulin",Mumbai
-PAT-2004,39,Male,"Prediabetes","None",Nashik
-PAT-2005,67,Female,"Type 2 Diabetes,Kidney Disease","Metformin",Thane
+PAT-2001,45,Male,"Type 2 Diabetes,Hypertension","Metformin,Lisinopril",Nagpur
+PAT-2002,50,Female,"Dyslipidemia","Atorvastatin,Ezetimibe",Thane
+PAT-2003,55,Male,"Obesity,Type 2 Diabetes","Metformin,GLP-1 Agonist",Pune
+PAT-2004,48,Female,"Hypertension","ACE Inhibitor,Amlodipine",Nashik
+PAT-2005,40,Male,"Type 2 Diabetes,Obesity","Insulin,Metformin",Nagpur
+PAT-2006,60,Male,"Hypertension","Amlodipine",Kolhapur
+PAT-2007,52,Female,"Type 2 Diabetes","Glimepiride",Aurangabad
+PAT-2008,80,Male,"Obesity","Orlistat",Mumbai
+PAT-2009,28,Female,"Migraine","Sumatriptan",Delhi
+PAT-2010,22,Male,"Asthma,Allergic Rhinitis","Salbutamol,Montelukast",Bangalore

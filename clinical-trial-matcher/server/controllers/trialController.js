@@ -27,7 +27,7 @@ function parseTrialJsonBuffer(file) {
 
 export async function createTrialRecord(req, res, next) {
   try {
-    const trial = await createTrial(req.body || {});
+    const trial = await createTrial({ ...req.body, uploadedBy: req.user?.id });
     return res.status(201).json({ trial });
   } catch (error) {
     if (error?.code === 11000) {
@@ -41,7 +41,7 @@ export async function createTrialRecord(req, res, next) {
 export async function importTrialDataset(req, res, next) {
   try {
     const records = parseTrialJsonBuffer(req.file);
-    const trials = await importTrials(records);
+    const trials = await importTrials(records, req.user?.id);
 
     return res.status(201).json({
       count: trials.length,
@@ -64,7 +64,7 @@ export async function importTrialDataset(req, res, next) {
 
 export async function listTrials(req, res, next) {
   try {
-    const trials = await getAllTrials(req.query || {});
+    const trials = await getAllTrials({ ...req.query, uploadedBy: req.user?.id });
     return res.status(200).json({ count: trials.length, trials });
   } catch (error) {
     return next(error);
