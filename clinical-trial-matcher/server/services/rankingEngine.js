@@ -1,8 +1,8 @@
 import { matchPatientToTrialByEmbedding } from "../../ai-services/embedding-engine/matcher.js";
 import { evaluateEligibilityWithScore } from "./ruleEngine.js";
 
-const RULE_WEIGHT = 0.5;
-const SIMILARITY_WEIGHT = 0.35;
+const RULE_WEIGHT = 0.55;
+const SIMILARITY_WEIGHT = 0.30;
 const GEO_WEIGHT = 0.15;
 
 function clampUnit(value) {
@@ -106,13 +106,14 @@ export async function rankTrialsForPatient({ patient, trials, matchingScores = [
           const semantic = await matchPatientToTrialByEmbedding(patient, trial);
           similarityScore = clampUnit(semantic.similarityScore);
         } catch (_error) {
-          similarityScore = 0;
+          // Fallback: use the rule score as a proxy when embedding fails
+          similarityScore = clampUnit(ruleScore * 0.85);
         }
       }
 
       const geographicScore = computeGeographicProximity(patient.location, trial.location);
 
-      const combinedScore =
+      let combinedScore =
         (ruleScore * RULE_WEIGHT) +
         (similarityScore * SIMILARITY_WEIGHT) +
         (geographicScore * GEO_WEIGHT);

@@ -13,7 +13,7 @@ function isDbConnected() {
 }
 
 function normalizeTrial(input = {}) {
-  return {
+  const normalized = {
     trialId: String(input.trialId || "").trim(),
     title: String(input.title || "").trim(),
     condition: String(input.condition || "").trim(),
@@ -25,6 +25,8 @@ function normalizeTrial(input = {}) {
     phase: String(input.phase || "").trim(),
     sponsor: String(input.sponsor || "").trim()
   };
+  if (input.uploadedBy) normalized.uploadedBy = input.uploadedBy;
+  return normalized;
 }
 
 function validateTrial(trial) {
@@ -64,8 +66,12 @@ export async function createTrial(trialPayload) {
   return Trial.create(prepared);
 }
 
-export async function importTrials(trialPayloadList = []) {
-  const prepared = trialPayloadList.map(prepareTrial);
+export async function importTrials(trialPayloadList = [], userId) {
+  const prepared = trialPayloadList.map((t) => {
+    const p = prepareTrial(t);
+    if (userId) p.uploadedBy = userId;
+    return p;
+  });
   if (!isDbConnected()) {
     return importTrialsMemory(prepared);
   }
@@ -79,6 +85,10 @@ export async function getAllTrials(filters = {}) {
   }
 
   const query = {};
+
+  if (filters.uploadedBy) {
+    query.uploadedBy = filters.uploadedBy;
+  }
 
   if (filters.condition) {
     query.condition = { $regex: filters.condition, $options: "i" };

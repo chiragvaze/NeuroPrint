@@ -28,8 +28,28 @@ export default function BatchProcessingPage() {
       
       const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
       
+      // Proper CSV parser that handles quoted fields with commas inside
+      function parseCSVLine(line) {
+        const result = [];
+        let current = '';
+        let inQuotes = false;
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+          if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === ',' && !inQuotes) {
+            result.push(current.trim());
+            current = '';
+          } else {
+            current += char;
+          }
+        }
+        result.push(current.trim());
+        return result;
+      }
+
       const parsedPatients = lines.slice(1).map(line => {
-        const values = line.split(',');
+        const values = parseCSVLine(line);
         const patient = {};
         headers.forEach((header, index) => {
           patient[header] = values[index]?.trim() || "";
@@ -67,8 +87,8 @@ export default function BatchProcessingPage() {
             age: Number(p.age) || 0,
             gender: p.gender || "Unknown",
             location: p.location || "",
-            conditions: (p.conditions || "").split(";").filter(Boolean),
-            medications: (p.medications || "").split(";").filter(Boolean),
+            conditions: (p.conditions || "").split(/[;,]/).map(s => s.trim()).filter(Boolean),
+            medications: (p.medications || "").split(/[;,]/).map(s => s.trim()).filter(Boolean),
           };
 
           const res = await fetchRecommendations({ patient: formattedPatient, trials: allTrials });

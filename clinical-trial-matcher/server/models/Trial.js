@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const TrialSchema = new mongoose.Schema(
   {
-    trialId: { type: String, required: true, unique: true, trim: true },
+    trialId: { type: String, required: true, trim: true },
     title: { type: String, required: true, trim: true },
     condition: { type: String, required: true, trim: true },
     location: { type: String, required: true, trim: true },
@@ -12,6 +12,7 @@ const TrialSchema = new mongoose.Schema(
     exclusionCriteria: { type: String, required: true, trim: true },
     phase: { type: String, required: true, trim: true },
     sponsor: { type: String, required: true, trim: true },
+    uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
     parsedEligibility: {
       ageRange: [{ type: Number }],
       requiredConditions: [{ type: String, trim: true }],

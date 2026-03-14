@@ -6,7 +6,7 @@ import {
 
 export async function createPatientRecord(req, res, next) {
   try {
-    const patient = await createPatient(req.validatedPatient);
+    const patient = await createPatient({ ...req.validatedPatient, uploadedBy: req.user?.id });
     res.status(201).json({ patient });
   } catch (error) {
     if (error?.code === 11000) {
@@ -19,7 +19,8 @@ export async function createPatientRecord(req, res, next) {
 
 export async function uploadPatients(req, res, next) {
   try {
-    const patients = await createPatients(req.validatedPatients);
+    const patientsWithUser = req.validatedPatients.map(p => ({ ...p, uploadedBy: req.user?.id }));
+    const patients = await createPatients(patientsWithUser);
     res.status(201).json({
       count: patients.length,
       patients

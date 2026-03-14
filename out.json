@@ -1,0 +1,29 @@
+{
+  "res1": {
+    "eligible": false,
+    "reasons": [
+      "Age within range",
+      "Missing required condition",
+      "No exclusion criteria defined"
+    ],
+    "ruleScore": 0.55
+  },
+  "res2": {
+    "eligible": true,
+    "reasons": [
+      "Age within range",
+      "Strong condition match",
+      "No exclusion criteria defined"
+    ],
+    "ruleScore": 1
+  },
+  "res3": {
+    "eligible": false,
+    "reasons": [
+      "Age within range",
+      "Missing required condition",
+      "No exclusion criteria defined"
+    ],
+    "ruleScore": 0.55
+  }
+}

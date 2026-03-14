@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import {
   fetchAllTrials,
   fetchMatchExplanation,
-  fetchRecommendations
+  fetchRecommendations,
+  fetchPatientById
 } from "../services/api";
 import RecommendedTrialsList from "../components/RecommendedTrialsList";
 import MatchConfidenceChart from "../components/MatchConfidenceChart";
@@ -91,7 +92,31 @@ export default function MatchResultsDashboardPage() {
   async function generateRecommendations() {
     setLoading(true); setError("");
     try {
-      const patient = normalizePatient(patientForm);
+      // Start with form data
+      let mergedForm = { ...patientForm };
+
+      // If a Patient ID is provided, try to fetch from DB and use as base
+      if (patientForm.patientId.trim()) {
+        try {
+          const dbRes = await fetchPatientById(patientForm.patientId.trim());
+          const dbPatient = dbRes.patient;
+          if (dbPatient) {
+            // Use DB data as base, but let any user-typed form fields override
+            mergedForm = {
+              patientId: patientForm.patientId,
+              age: patientForm.age || String(dbPatient.age || ""),
+              gender: patientForm.gender || dbPatient.gender || "",
+              location: patientForm.location || dbPatient.location || "",
+              conditions: patientForm.conditions || (Array.isArray(dbPatient.conditions) ? dbPatient.conditions.join(", ") : ""),
+              medications: patientForm.medications || (Array.isArray(dbPatient.medications) ? dbPatient.medications.join(", ") : ""),
+            };
+          }
+        } catch (_fetchErr) {
+          // Patient not found in DB — use form data as-is (manual entry)
+        }
+      }
+
+      const patient = normalizePatient(mergedForm);
       const res = await fetchAllTrials({});
       let trials = res.trials || [];
       if (geoFilter.trim()) {
@@ -172,9 +197,9 @@ export default function MatchResultsDashboardPage() {
             { name: "patientId", placeholder: "PAT-3001", label: "Patient ID" },
             { name: "age", placeholder: "45", label: "Age (Optional)", type: "number" },
             { name: "gender", placeholder: "Male / Female", label: "Gender (Optional)" },
-            { name: "location", placeholder: "Mumbai, India", label: "Location (Optional)" },
-            { name: "conditions", placeholder: "Diabetes, Hypertension", label: "Conditions (Optional)", span: "sm:col-span-2 lg:col-span-1" },
-            { name: "medications", placeholder: "Metformin, Insulin", label: "Medications (Optional)", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "location", placeholder: "Nagpur", label: "Location (Optional)" },
+            { name: "conditions", placeholder: "Type 2 Diabetes, Hypertension", label: "Conditions (Optional)", span: "sm:col-span-2 lg:col-span-1" },
+            { name: "medications", placeholder: "Metformin, Lisinopril", label: "Medications (Optional)", span: "sm:col-span-2 lg:col-span-1" },
           ].map((f) => (
             <div key={f.name} className={f.span || ""}>
               <label className="block text-[10px] font-bold uppercase tracking-[0.15em] text-slate-300 mb-1.5">{f.label}</label>
