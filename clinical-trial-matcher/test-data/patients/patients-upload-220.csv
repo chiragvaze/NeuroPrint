@@ -219,3 +219,23 @@ PAT-3217,63,Male,"Type 2 Diabetes,Obesity","Metformin,GLP-1 Agonist",Pune
 PAT-3218,64,Female,"Prediabetes,Dyslipidemia","Insulin,DPP-4 Inhibitor",Nashik
 PAT-3219,65,Male,"Hypertension,Fatty Liver","GLP-1 Agonist,ACE Inhibitor",Thane
 PAT-3220,66,Female,"Obesity,Neuropathy","DPP-4 Inhibitor,Statin",Nagpur
+PAT-2001,45,Female,"Type 2 Diabetes,Hypertension",Metformin,Mumbai
+PAT-2002,52,Male,Type 2 Diabetes,Metformin,Pune
+PAT-2003,61,Female,"Type 2 Diabetes,Obesity",Insulin,Mumbai
+PAT-2004,39,Male,Prediabetes,None,Nashik
+PAT-2005,67,Female,"Type 2 Diabetes,Kidney Disease",Metformin,Thane
+PAT-2006,50,Male,Type 2 Diabetes,Metformin,Mumbai
+PAT-2007,56,Female,"Type 2 Diabetes,Hypertension",Metformin,Pune
+PAT-2008,62,Male,Type 2 Diabetes,Insulin,Mumbai
+PAT-2009,48,Female,Type 2 Diabetes,Metformin,Nashik
+PAT-2010,59,Male,"Type 2 Diabetes,Obesity",Insulin,Thane
+PAT-2011,53,Female,Type 2 Diabetes,Metformin,Mumbai
+PAT-2012,66,Male,"Type 2 Diabetes,Hypertension",Metformin,Pune
+PAT-2013,60,Female,Type 2 Diabetes,Insulin,Mumbai
+PAT-2014,57,Male,Type 2 Diabetes,Metformin,Nashik
+PAT-2015,64,Female,"Type 2 Diabetes,Obesity",Insulin,Thane
+PAT-2016,51,Male,Type 2 Diabetes,Metformin,Mumbai
+PAT-2017,58,Female,"Type 2 Diabetes,Hypertension",Metformin,Pune
+PAT-2018,63,Male,Type 2 Diabetes,Insulin,Mumbai
+PAT-2019,49,Female,Type 2 Diabetes,Metformin,Nashik
+PAT-2020,67,Male,"Type 2 Diabetes,Hypertension",Metformin,Thane
